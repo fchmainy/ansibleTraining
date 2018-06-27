@@ -8,5 +8,8 @@ It uses **no agents and no additional custom security infrastructure**, so it is
 
 *https://docs.ansible.com/ansible/2.3/dev_guide/overview_architecture.html*
 
+
+
 or as a short answer:
+
 **a simple automation tool without any agent to install on targets to run a succession of configuration tasks using a simple human readable language**
