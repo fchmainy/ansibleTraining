@@ -45,6 +45,7 @@ List installed roles
 Use list to show the name and version of each role installed in the roles_path.
 
 .. code::
+
  $ ansible-galaxy list
  - fch.rundocker, (unknown version)
 
@@ -56,6 +57,7 @@ Get more information about a role
 Use the info command to view more detail about a specific role:
 
 .. code::
+
  $ ansible-galaxy info fch.rundocker
 
  Role: fch.rundocker
@@ -91,12 +93,16 @@ Now, let’s run this role with a simple playbook. There is already a test playb
 copy this content in a new file: /tmp/task4.yml 
 
 Then run the playbook:
+
 .. parsed-literal::
+
  $ ansible-playbook /tmp/task4.yml --ask-sudo
 
 There are already 3 instances of the same container in the tests file:
+
 .. parsed-literal::
-  vars:
+
+ vars:
     container_ports:
       - "9081"
       - "9082"
@@ -105,6 +111,7 @@ There are already 3 instances of the same container in the tests file:
 let’s check if our containers have been created:
 
 .. parsed-literal::
+
  $ sudo docker ps
  CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
  f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9083->80/tcp   myapp_9083
@@ -114,6 +121,7 @@ let’s check if our containers have been created:
 These variables can be overridden easily by passing the variables as **extra-vars** while running the playbook
 
 .. parsed-literal::
+
  $ ansible-playbook fch.rundocker/tests/test.yml --ask-sudo --extra-vars 'container_ports=["9084","9085"]'
  $ sudo docker ps
  CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
