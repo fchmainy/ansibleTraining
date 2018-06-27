@@ -29,18 +29,13 @@ Loops
 --------
 
 
-copy and paste the following content in a YAML playbookfile. let’s call it: task1.yml
-
+copy and paste the following content in a YAML playbookfile. let’s call it: task2.yml
 
 .. literalinclude:: task2.yml
-    :linenos:
     :language: yaml
 
 
-.. include:: task2.yml
-   :literal:
 
-.. code::
 
 
 ---
