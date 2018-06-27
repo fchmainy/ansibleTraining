@@ -24,12 +24,9 @@ Search for Roles
 Search the Galaxy database by tags, platforms, author and multiple keywords. For example:
 
 .. code::
+
  $ ansible-galaxy search bigip
-
-Found 11 roles matching your search:
-
-.. parsed-literal::
-
+ Found 11 roles matching your search:
  Name                                     Description
  ----                                     -----------
  f5devcentral.bigip-onboarding            Modules to on board the BIG-IP
@@ -46,6 +43,7 @@ List installed roles
 Use list to show the name and version of each role installed in the roles_path.
 
 .. code::
+
 $ ansible-galaxy list
 - fch.rundocker, (unknown version)
 
@@ -55,6 +53,7 @@ $ ansible-galaxy list
 Get more information about a role
 
 Use the info command to view more detail about a specific role:
+
 .. code::
 $ ansible-galaxy info fch.rundocker
 
