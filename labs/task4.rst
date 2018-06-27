@@ -1,132 +1,260 @@
-Task 4. Use an existing local ansible role
-===========================================
-
-Ansible Galaxy refers to the Galaxy website (https://galaxy.ansible.com/)  where users can share roles, and to a command line tool for installing, creating and managing roles.
-Galaxy, is a free site for finding, downloading, and sharing community developed roles. Downloading roles from Galaxy is a great way to jumpstart your automation projects.
-
-You can also use the site to share roles that you create. By authenticating with the site using your GitHub account, you’re able to import roles, making them available to the Ansible community. Imported roles become available in the Galaxy search index and visible on the site, allowing users to discover and download them.
-
-The ansible-galaxy command comes bundled with Ansible, and you can use it to install roles from Galaxy or directly from a git based SCM. You can also use it to create a new role, remove roles, or perform tasks on the Galaxy website.
-
-The command line tool by default communicates with the Galaxy website API using the server address https://galaxy.ansible.com. Since the Galaxy project is an open source project, you may be running your own internal Galaxy server and wish to override the default server address. You can do this using the –serveroption or by setting the Galaxy server value in your ansible.cfg file. For information on setting the value in ansible.cfg visit Galaxy Settings.
-
-
-Installing Roles
---------------------
-Use the ansible-galaxy command to download roles from the Galaxy website
+Task 4. Create an ansible role
+=======================
+Use the init command to initialize the base structure of a new role, saving time on creating the various directories and main.yml files a role requires
 
 .. code::
 
- $ ansible-galaxy install username.role_name,v1.0.0
+	$ ansible-galaxy init username.task4 --offline
+	- username.task4 was created successfully
 
-
-Search for Roles
-----------------------
-Search the Galaxy database by tags, platforms, author and multiple keywords. For example:
-
-.. code::
-
- $ ansible-galaxy search bigip
- Found 11 roles matching your search:
- Name                                     Description
- ----                                     -----------
- f5devcentral.bigip-onboarding            Modules to on board the BIG-IP
- f5devcentral.bigip-toggle-nodeStatus     Ansible role to enable/disable pool member on BIG-IP
- f5devcentral.bigip-ansible-deploy-iapp   Ansible role to deploy an F5 iApp
- f5devcentral.bigip-hardening             Ansible role to automate base BIG-IP hardening, and STIG/SRG configuration
- f5devcentral.bigip-ansible-virtualserver Ansible role to configure nodes/pools and virtual server on the BIG-IP
- mikefaille.ansible-bigdata               Playbook for boostratping Big data env.
- erjac77.module-f5bigip                   Ansible module for F5 BIG-IP
- . . .
-
-
-List installed roles
------------------------
-Use list to show the name and version of each role installed in the roles_path.
-
-.. code::
-
- $ ansible-galaxy list
- - fch.rundocker, (unknown version)
-
-
-
-
-Get more information about a role
----------------------------------
-Use the info command to view more detail about a specific role:
-
-.. code::
-
- $ ansible-galaxy info fch.rundocker
-
- Role: fch.rundocker
-         description:
-         dependencies: []
-         galaxy_info:
-                 author: Fouad Chmainy
-                 company: F5 Demo
-                 galaxy_tags: []
-                 license: license (GPLv2, CC-BY, etc)
-                 min_ansible_version: 2.3
-         path: [u'/etc/ansible/roles']
-
-
-Now, let’s run this role with a simple playbook. There is already a test playbook in the tests directory of the role:
-
-.. parsed-literal::
- ---
- - hosts: me
-   remote_user: fchmainy
-   strategy: debug
-   gather_facts: yes
-
-   vars:
-     container_ports:
-       - "9081"
-       - "9082"
-       - "9083"
-
-   roles:
-     - { role: fch.rundocker, become: yes, myports: "{{ container_ports }}” }
-
-copy this content in a new file: /tmp/task4.yml 
-
-Then run the playbook:
-
+You should then have the framework for your role:
 .. parsed-literal::
 
- $ ansible-playbook /tmp/task4.yml --ask-sudo
+	$ ls -R fch.task4/
+	fch.task4/:
+	README.md  defaults  files  handlers  meta  tasks  templates  tests  vars
 
-There are already 3 instances of the same container in the tests file:
+	fch.task4/defaults:
+	main.yml
+
+	fch.task4/files:
+
+	fch.task4/handlers:
+	main.yml
+
+	fch.task4/meta:
+	main.yml
+
+	fch.task4/tasks:
+	main.yml
+
+	fch.task4/templates:
+
+	fch.task4/tests:
+	inventory  test.yml
+
+	fch.task4/vars:
+	main.yml
+
+**Role Variables**
+In the defaults/main.yml file, copy the following content:
+.. parsed-literal::
+
+	username: "admin"
+	password: "admin"
+
+	app_name: "myApp"
+	pool_name: "{{ app_name }}_pool"
+	redirect_port: "80"
+	vip_ip: "10.100.26.143"
+	vip_port: "443"
+
+	pool_members:
+	- port: "80"
+	  host: "10.100.26.144"
+	- port: "80"
+	  host: “10.100.26.145"
+
+This is the key/value pairs variables to use in your role.
+here, variables are passed to the **defaults** folder. In the existing fch.run_docker role, variables are passed to the **vars** folder. Both solutions are valid depending on what you want to achieve and the precedence
+
+Note:
+-----
+If multiple variables of the same name are defined in different places, they win in a certain order, which is:
+
+	* extra vars (-e in the command line) always win
+	* then comes connection variables defined in inventory (ansible_ssh_user, etc)
+	* then comes "most everything else" (command line switches, vars in play, included vars, role vars, etc)
+	* then comes the rest of the variables defined in inventory
+	* then comes facts discovered about a system
+	* then "role defaults", which are the most "defaulty" and lose in priority to everything.
+
+*https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable*
+
+**Role Inventory**
+
+paste the following inventory to your hosts file.
+.. parsed-literal::
+
+	[bigip]
+	192.168.1.143
+
+**Role Tasks**
+Copy/paste the following tasks in your tasks/main.yml file:
 
 .. parsed-literal::
 
- vars:
-    container_ports:
-      - "9081"
-      - "9082"
-      - "9083"
+	  - name: Create nodes
+	    bigip_node:
+	      server: "{{ inventory_hostname }}"
+	      user: "{{ username }}"
+	      password: "{{ password }}"
+	      host: "{{item.host}}"
+	      name: "{{item.host}}"
+	      validate_certs: False
+	    with_items: "{{pool_members}}"
+	    delegate_to: localhost
 
-let’s check if our containers have been created:
+	  - name: Create pool
+	    bigip_pool:
+	      server: "{{ inventory_hostname }}"
+	      user: "{{ username }}"
+	      password: "{{ password }}"
+	      name: "{{pool_name}}"
+	      lb_method: "round-robin"
+	      monitors: "/Common/http"
+	      validate_certs: False
+	    delegate_to: localhost
+
+	  - name: Add Pool members
+	    bigip_pool_member:
+	      server: "{{ inventory_hostname }}"
+	      user: "{{ username }}"
+	      password: "{{ password }}"
+	      name: "{{item.host}}"
+	      host: "{{item.host}}"
+	      port: "{{item.port}}"
+	      pool: "{{pool_name}}"
+	      validate_certs: False
+	    with_items: "{{pool_members}}"
+	    delegate_to: localhost
+
+	  - name: Add Virtual Server
+	    bigip_virtual_server:
+	      server: "{{ inventory_hostname }}"
+	      user: "{{ username }}"
+	      password: "{{ password }}"
+	      name: "{{ app_name }}_vs_https"
+	      destination: "{{ vip_ip }}"
+	      port: "{{ vip_port }}"
+	      all_profiles:
+	       - http
+	       - name: clientssl
+		 context: client-side
+	      pool: "{{pool_name}}"
+	      snat: "automap"
+	      irules:
+	      - "_sys_https_redirect"
+	      validate_certs: False
+	    delegate_to: localhost
+
+	  - name: Add Redirect Virtual Server
+	    bigip_virtual_server:
+	      server: "{{ inventory_hostname }}"
+	      user: "{{ username }}"
+	      password: "{{ password }}"
+	      name: "{{ app_name }}_vs_http_redirect"
+	      destination: "{{ vip_ip }}"
+	      port: "80"
+	      all_profiles:
+	       - http
+	      irules:
+	      - "_sys_https_redirect"
+	      validate_certs: False
+	    delegate_to: localhost
+
+**(Optional)Create your meta  file** 
+This is mainly for documentation, and to help you find the best role for reuse…
+
+.. parsed-literal::
+	galaxy_info:
+	  author: <Your name>
+	  company: <Your Company
+	  license: license (GPLv2, CC-BY, etc)
+	  min_ansible_version: 2.5
+	  platforms:
+	    - name: Ubuntu
+	      versions:
+	      - all
+	  categories:
+	      - ….
+	  galaxy_tags:
+	    - bigip
+	    - networking
+	    - selfip
+	    - bigip
+	    - F5
+
+Securing sensitive information
+---------------------------------------
+
+Keeping passwords in clear text in probably the worst thing we have done yet :( Let’s secure it using ansible vault (https://docs.ansible.com/ansible/2.4/vault.html).
+"Vault" is a feature of ansible that allows keeping sensitive data such as passwords or keys in encrypted files, rather than as plaintext in your playbooks or roles. These vault files can then be distributed or placed in source control.
+
+The default and easiest way is to encrypt the whole variable file and ask for the vault password when running the playbook.
+As of version 2.3, Ansible also supports encrypting single values inside a YAML file, using the !vault tag to let YAML and Ansible know it uses special processing. This feature is covered in more details below.
+
+The ansible-vault encrypt_string command will encrypt and format a provided string into a format that can be included in ansible-playbook YAML files.
+
+To encrypt your admin password as a cli arg:
 
 .. parsed-literal::
 
- $ sudo docker ps
- CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
- f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9083->80/tcp   myapp_9083
- 134e85ab982e        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9082->80/tcp   myapp_9082
- d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9081->80/tcp   myapp_9081
+	$ ansible-vault encrypt_string 'admin' --name 'password'
+	New Vault password:
+	Confirm New Vault password:
+	password: !vault |
+		  $ANSIBLE_VAULT;1.1;AES256
+		  38616233643963386663646565666535316639353634666636656338643562363961333362323134
+		  6663633034333936303936393666303165356232373230330a356635326663393262383331656438
+		  30323265646362383339646438376366643430393930333139356433626634616635386465666239
+		  3333646665643662630a376237643064343466313066626333356439633330336538616461323364
+		  3865
+	Encryption successful
 
-These variables can be overridden easily by passing the variables as **extra-vars** while running the playbook
+
+Then replace the password line in your defaults/main.yml file
+.. parsed-literal::
+	username: "admin"
+	password: "admin"
+	…
+
+by the encrypted string previously generated:
 
 .. parsed-literal::
 
- $ ansible-playbook fch.rundocker/tests/test.yml --ask-sudo --extra-vars 'container_ports=["9084","9085"]'
- $ sudo docker ps
- CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
- d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9085->80/tcp   myapp_9085
- 037a4b004339        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9084->80/tcp   myapp_9084
- 9c10a5e70584        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9083->80/tcp   myapp_9083
- f510d393ed53        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9082->80/tcp   myapp_9082
- 796c06cb7437        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9081->80/tcp   myapp_9081
+	username: "admin"
+	password: !vault |
+		  $ANSIBLE_VAULT;1.1;AES256
+		  38616233643963386663646565666535316639353634666636656338643562363961333362323134
+		  6663633034333936303936393666303165356232373230330a356635326663393262383331656438
+		  30323265646362383339646438376366643430393930333139356433626634616635386465666239
+		  3333646665643662630a376237643064343466313066626333356439633330336538616461323364
+		  3865
+
+Running your playbook:
+-------------------------------
+
+create a playbook called task5.yml and paste the following content:
+
+.. parsed-literal::
+
+	---
+	- name: Configure http service
+	  hosts: prod
+	  gather_facts: false
+	  roles:
+	    - { role: fch.lbsvc }
+
+then run your playbook:
+
+.. parsed-literal::
+
+$ ansible-playbook task5.yml -vvv
+
+you can check on your BigIP the service have been created.
+
+You can easily run the same role to add pool members to the configuration (remember: F5 ansible playbooks are idempotent):
+.. parsed-literal::
+
+	$ ansible-playbook task5.yml --ask-sudo --extra-vault-pass 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}]”'
+
+or run the same playbook for a new service without touching the playbook YAML file:
+
+.. parsed-literal::
+
+	$ ansible-playbook task5.yml --ask-sudo --extra-vault-pass 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}] app_name="my2ndApp" vip_ip="10.100.26.43"'
+
+
+
+
