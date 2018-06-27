@@ -61,7 +61,6 @@ here, variables are passed to the **defaults** folder. In the existing fch.run_d
 Note:
 -----
 If multiple variables of the same name are defined in different places, they win in a certain order, which is:
-
 	* extra vars (-e in the command line) always win
 	* then comes connection variables defined in inventory (ansible_ssh_user, etc)
 	* then comes "most everything else" (command line switches, vars in play, included vars, role vars, etc)
