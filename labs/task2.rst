@@ -31,7 +31,7 @@ Loops
 
 copy and paste the following content in a YAML playbookfile. let’s call it: task1.yaml
 
-'''
+```
 ---
 - hosts: prod
   remote_user: fchmainy
@@ -119,7 +119,7 @@ copy and paste the following content in a YAML playbookfile. let’s call it: ta
         - "_sys_https_redirect"
         validate_certs: False
       delegate_to: localhost
-'''
+```
 
 run the playbook using the following command:
 .. code::
