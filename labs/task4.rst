@@ -224,7 +224,7 @@ by the encrypted string previously generated:
 Running your playbook:
 -------------------------------
 
-create a playbook called task5.yml and paste the following content:
+create a playbook called /tmp/task4.yml and paste the following content:
 
 .. parsed-literal::
 
@@ -239,21 +239,21 @@ then run your playbook:
 
 .. parsed-literal::
 
-$ ansible-playbook task5.yml -vvv
+$ ansible-playbook task4.yml -vvv
 
 you can check on your BigIP the service have been created.
 
 You can easily run the same role to add pool members to the configuration (remember: F5 ansible playbooks are idempotent):
 .. parsed-literal::
 
-	$ ansible-playbook task5.yml --ask-sudo --extra-vault-pass 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}]”'
+	$ ansible-playbook task4.yml --ask-sudo --extra-vault-pass 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}]”'
 
 or run the same playbook for a new service without touching the playbook YAML file:
 
 .. parsed-literal::
 
-	$ ansible-playbook task5.yml --ask-sudo --extra-vault-pass 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}] app_name="my2ndApp" vip_ip="10.100.26.43"'
+	$ ansible-playbook task4.yml --ask-sudo --extra-vault-pass 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}] app_name="my2ndApp" vip_ip="10.100.26.43"'
 
-
+You can run it as many time as you want as it is... did I already told you about idempotency?
 
 
