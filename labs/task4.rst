@@ -16,7 +16,8 @@ Installing Roles
 Use the ansible-galaxy command to download roles from the Galaxy website
 
 .. code::
- $ ansible-galaxy install username.role_name,v1.0.0
+
+$ ansible-galaxy install username.role_name,v1.0.0
 
 
 Search for Roles
@@ -44,9 +45,8 @@ List installed roles
 Use list to show the name and version of each role installed in the roles_path.
 
 .. code::
-
-$ ansible-galaxy list
-- fch.rundocker, (unknown version)
+ $ ansible-galaxy list
+ - fch.rundocker, (unknown version)
 
 
 
@@ -56,19 +56,18 @@ Get more information about a role
 Use the info command to view more detail about a specific role:
 
 .. code::
+ $ ansible-galaxy info fch.rundocker
 
-$ ansible-galaxy info fch.rundocker
-
-Role: fch.rundocker
-        description:
-        dependencies: []
-        galaxy_info:
-                author: Fouad Chmainy
-                company: F5 Demo
-                galaxy_tags: []
-                license: license (GPLv2, CC-BY, etc)
-                min_ansible_version: 2.3
-        path: [u'/etc/ansible/roles']
+ Role: fch.rundocker
+         description:
+         dependencies: []
+         galaxy_info:
+                 author: Fouad Chmainy
+                 company: F5 Demo
+                 galaxy_tags: []
+                 license: license (GPLv2, CC-BY, etc)
+                 min_ansible_version: 2.3
+         path: [u'/etc/ansible/roles']
 
 
 Now, let’s run this role with a simple playbook. There is already a test playbook in the tests directory of the role:
@@ -92,10 +91,11 @@ Now, let’s run this role with a simple playbook. There is already a test playb
 copy this content in a new file: /tmp/task4.yml 
 
 Then run the playbook:
-ansible-playbook /tmp/task4.yml --ask-sudo
+.. parsed-literal::
+ $ ansible-playbook /tmp/task4.yml --ask-sudo
 
 There are already 3 instances of the same container in the tests file:
-.. code::
+.. parsed-literal::
   vars:
     container_ports:
       - "9081"
@@ -104,26 +104,21 @@ There are already 3 instances of the same container in the tests file:
 
 let’s check if our containers have been created:
 
-.. code::
-
-$ sudo docker ps
-CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
-f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9083->80/tcp   myapp_9083
-134e85ab982e        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9082->80/tcp   myapp_9082
-d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9081->80/tcp   myapp_9081
+.. parsed-literal::
+ $ sudo docker ps
+ CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
+ f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9083->80/tcp   myapp_9083
+ 134e85ab982e        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9082->80/tcp   myapp_9082
+ d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9081->80/tcp   myapp_9081
 
 These variables can be overridden easily by passing the variables as **extra-vars** while running the playbook
 
-.. code::
-
-$ ansible-playbook fch.rundocker/tests/test.yml --ask-sudo --extra-vars 'container_ports=["9084","9085"]'
-
-$ sudo docker ps
-CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
-d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9085->80/tcp   myapp_9085
-037a4b004339        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9084->80/tcp   myapp_9084
-9c10a5e70584        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9083->80/tcp   myapp_9083
-f510d393ed53        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9082->80/tcp   myapp_9082
-796c06cb7437        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9081->80/tcp   myapp_9081
-
-
+.. parsed-literal::
+ $ ansible-playbook fch.rundocker/tests/test.yml --ask-sudo --extra-vars 'container_ports=["9084","9085"]'
+ $ sudo docker ps
+ CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
+ d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9085->80/tcp   myapp_9085
+ 037a4b004339        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9084->80/tcp   myapp_9084
+ 9c10a5e70584        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9083->80/tcp   myapp_9083
+ f510d393ed53        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9082->80/tcp   myapp_9082
+ 796c06cb7437        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9081->80/tcp   myapp_9081
