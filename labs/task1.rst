@@ -6,6 +6,7 @@ Once inventory hosts are listed, variables can be assigned to them in simple tex
 As described above, it is easy to assign variables to hosts that will be used later in playbooks:
 
 .. code::
+
 	[atlanta]
 	host1 http_port=80 maxRequestsPerChild=808
 	host2 http_port=303 maxRequestsPerChild=909
@@ -14,6 +15,7 @@ As described above, it is easy to assign variables to hosts that will be used la
 Variables can also be applied to an entire group at once:
 
 .. code::
+
 	[atlanta]
 	host1
 	host2
