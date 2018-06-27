@@ -33,10 +33,10 @@ Let's create a simple ansible inventory! For our lab we will use the main invent
 This is as simple as that!!!
 
 Besides being simple, this is really powerful in the defintion of targets:
-**webservers:bigip** is a logical OR operation so it means **paris**
-**paris:!webserverss** means paris devices *except* webservers, so: ***bigip**
-**bigip:&production** is a logical intersection, so:  **192.168.1.102**
-**paris:&bigip:!lab** is a combinaison corresponding to 192.168.1.102
+	* **webservers:bigip** is a logical OR operation so it means **paris**
+	* **paris:!webserverss** means paris devices *except* webservers, so: ***bigip**
+	* **bigip:&production** is a logical intersection, so:  **192.168.1.102**
+	* **paris:&bigip:!lab** is a combinaison corresponding to 192.168.1.102
 
 
 Although it is not recommended to add variables to the main inventory file we will do it for lab purpose only. In real life, we higly recommend using dedicated INI files such as:
