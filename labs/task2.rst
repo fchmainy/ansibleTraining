@@ -32,6 +32,7 @@ Loops
 copy and paste the following content in a YAML playbookfile. let’s call it: task1.yaml
 
 .. code::
+
 ---
 - hosts: prod
   remote_user: fchmainy
@@ -123,10 +124,10 @@ copy and paste the following content in a YAML playbookfile. let’s call it: ta
 
 run the playbook using the following command:
 .. code::
-ansible-playbook task1.yaml -vvv
 
-Note:
-You can run the playbook multiple time as F5 ansible modules are idempotent (https://en.wikipedia.org/wiki/Idempotence)
+  $ ansible-playbook task1.yaml -vvv
+
+*Note: You can run the playbook multiple time as F5 ansible modules are idempotent (https://en.wikipedia.org/wiki/Idempotence) *
 
 
 
