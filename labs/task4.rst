@@ -38,6 +38,7 @@ Search the Galaxy database by tags, platforms, author and multiple keywords. For
  erjac77.module-f5bigip                   Ansible module for F5 BIG-IP
  . . .
 
+
 List installed roles
 -----------------------
 Use list to show the name and version of each role installed in the roles_path.
@@ -51,10 +52,11 @@ $ ansible-galaxy list
 
 
 Get more information about a role
-
+---------------------------------
 Use the info command to view more detail about a specific role:
 
 .. code::
+
 $ ansible-galaxy info fch.rundocker
 
 Role: fch.rundocker
@@ -71,21 +73,21 @@ Role: fch.rundocker
 
 Now, let’s run this role with a simple playbook. There is already a test playbook in the tests directory of the role:
 
-.. code::
----
-- hosts: me
-  remote_user: fchmainy
-  strategy: debug
-  gather_facts: yes
+.. parsed-literal::
+ ---
+ - hosts: me
+   remote_user: fchmainy
+   strategy: debug
+   gather_facts: yes
 
-  vars:
-    container_ports:
-      - "9081"
-      - "9082"
-      - "9083"
+   vars:
+     container_ports:
+       - "9081"
+       - "9082"
+       - "9083"
 
-  roles:
-    - { role: fch.rundocker, become: yes, myports: "{{ container_ports }}” }
+   roles:
+     - { role: fch.rundocker, become: yes, myports: "{{ container_ports }}” }
 
 copy this content in a new file: /tmp/task4.yml 
 
@@ -101,7 +103,9 @@ There are already 3 instances of the same container in the tests file:
       - "9083"
 
 let’s check if our containers have been created:
+
 .. code::
+
 $ sudo docker ps
 CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
 f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9083->80/tcp   myapp_9083
@@ -109,8 +113,10 @@ f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ag
 d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9081->80/tcp   myapp_9081
 
 These variables can be overridden easily by passing the variables as **extra-vars** while running the playbook
+
 .. code::
-ansible-playbook fch.rundocker/tests/test.yml --ask-sudo --extra-vars 'container_ports=["9084","9085"]'
+
+$ ansible-playbook fch.rundocker/tests/test.yml --ask-sudo --extra-vars 'container_ports=["9084","9085"]'
 
 $ sudo docker ps
 CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
