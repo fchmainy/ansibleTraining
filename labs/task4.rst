@@ -15,17 +15,20 @@ Installing Roles
 --------------------
 Use the ansible-galaxy command to download roles from the Galaxy website
 
-$ ansible-galaxy install username.role_name,v1.0.0
+.. code::
+ $ ansible-galaxy install username.role_name,v1.0.0
 
 
 Search for Roles
 ----------------------
 Search the Galaxy database by tags, platforms, author and multiple keywords. For example:
 
-.. code ::
-$ ansible-galaxy search bigip
+.. code::
+ $ ansible-galaxy search bigip
 
 Found 11 roles matching your search:
+
+.. parsed-literal::
 
  Name                                     Description
  ----                                     -----------
@@ -36,7 +39,7 @@ Found 11 roles matching your search:
  f5devcentral.bigip-ansible-virtualserver Ansible role to configure nodes/pools and virtual server on the BIG-IP
  mikefaille.ansible-bigdata               Playbook for boostratping Big data env.
  erjac77.module-f5bigip                   Ansible module for F5 BIG-IP
-. . .
+ . . .
 
 List installed roles
 -----------------------
