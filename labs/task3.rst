@@ -7,22 +7,25 @@ Roles are ways of automatically loading certain vars_files, tasks, and handlers 
 
 Example project structure:
 
-site.yml
-webservers.yml
-fooservers.yml
-roles/
-   common/
-     tasks/
-     handlers/
-     files/
-     templates/
-     vars/
-     defaults/
-     meta/
-   webservers/
-     tasks/
-     defaults/
-     meta/
+.. parsed-literal::
+
+   site.yml
+   webservers.yml
+   fooservers.yml
+   roles/
+      common/
+        tasks/
+        handlers/
+        files/
+        templates/
+        vars/
+        defaults/
+        meta/
+      webservers/
+        tasks/
+        defaults/
+        meta/
+
 Roles expect files to be in certain directory names. Roles must include at least one of these directories, however it is perfectly fine to exclude any which are not being used. When in use, each directory must contain a main.yml file, which contains the relevant content:
 
 tasks - contains the main list of tasks to be executed by the role.
