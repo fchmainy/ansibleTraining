@@ -55,5 +55,7 @@ As an advanced use case, you can create directories named after your groups or h
 
 
 In order to check the inventory
+
 .. code::
-	# ansible-inventory --list
+
+	$ ansible-inventory --list
