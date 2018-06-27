@@ -326,6 +326,7 @@ Role: fch.rundocker
 Now, let’s run this role with a simple playbook. There is already a test playbook in the tests directory of the role:
 
 .. code::
+
 ---
 - hosts: me
   remote_user: fchmainy
@@ -344,7 +345,9 @@ Now, let’s run this role with a simple playbook. There is already a test playb
 copy this content in a new file: /tmp/task4.yml 
 
 Then run the playbook:
-ansible-playbook /tmp/task4.yml --ask-sudo
+
+.. code::
+$ ansible-playbook /tmp/task4.yml --ask-sudo
 
 There are already 3 instances of the same container in the tests file:
 .. code::
@@ -355,7 +358,9 @@ There are already 3 instances of the same container in the tests file:
       - "9083"
 
 let’s check if our containers have been created:
+
 .. code::
+
 $ sudo docker ps
 CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
 f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9083->80/tcp   myapp_9083
@@ -363,9 +368,10 @@ f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ag
 d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9081->80/tcp   myapp_9081
 
 These variables can be overridden easily by passing the variables as **extra-vars** while running the playbook
-.. code::
-ansible-playbook fch.rundocker/tests/test.yml --ask-sudo --extra-vars 'container_ports=["9084","9085"]'
 
+.. code::
+
+$ ansible-playbook fch.rundocker/tests/test.yml --ask-sudo --extra-vars 'container_ports=["9084","9085"]'
 $ sudo docker ps
 CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
 d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9085->80/tcp   myapp_9085
