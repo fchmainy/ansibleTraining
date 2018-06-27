@@ -16,6 +16,7 @@ Installing Roles
 Use the ansible-galaxy command to download roles from the Galaxy website
 
 .. code::
+
  $ ansible-galaxy install username.role_name,v1.0.0
 
 
