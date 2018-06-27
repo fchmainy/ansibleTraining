@@ -31,7 +31,7 @@ Loops
 
 copy and paste the following content in a YAML playbookfile. let’s call it: task1.yaml
 
-```
+.. code::
 ---
 - hosts: prod
   remote_user: fchmainy
@@ -49,7 +49,6 @@ copy and paste the following content in a YAML playbookfile. let’s call it: ta
         host: "10.100.26.144"
       - port: "80"
         host: "10.100.26.145"
-
   tasks:
     - name: Create nodes
       bigip_node:
@@ -61,7 +60,7 @@ copy and paste the following content in a YAML playbookfile. let’s call it: ta
         validate_certs: False
       with_items: "{{pool_members}}"
       delegate_to: localhost
-
+..
     - name: Create pool
       bigip_pool:
         server: "{{ inventory_hostname }}"
