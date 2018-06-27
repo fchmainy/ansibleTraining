@@ -1,4 +1,4 @@
-Task 4. Use an existing local ansible role
+Task 3. Use an existing local ansible role
 ===========================================
 
 Ansible Galaxy refers to the Galaxy website (https://galaxy.ansible.com/)  where users can share roles, and to a command line tool for installing, creating and managing roles.
