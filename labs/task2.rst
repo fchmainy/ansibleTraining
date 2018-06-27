@@ -33,6 +33,9 @@ copy and paste the following content in a YAML playbookfile. let’s call it: ta
 
 .. code::
 
+.. include:: task2.yml
+   :literal:
+
 ---
 - hosts: prod
   remote_user: fchmainy
