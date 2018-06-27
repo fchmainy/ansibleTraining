@@ -124,7 +124,7 @@ run the playbook using the following command:
 
 .. code::
 
-  $ ansible-playbook task1.yaml -vvv
+  $ ansible-playbook task2.yml -vvv
 
 *Note: You can run the playbook multiple time as F5 ansible modules are idempotent (https://en.wikipedia.org/wiki/Idempotence) *
 
