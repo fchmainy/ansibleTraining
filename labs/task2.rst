@@ -120,10 +120,6 @@ copy and paste the following content in a YAML playbookfile. let’s call it: ta
           validate_certs: False
         delegate_to: localhost
 
-
-.. literalinclude:: task2.yml
-   :language: yaml
-
 run the playbook using the following command:
 
 .. code::
