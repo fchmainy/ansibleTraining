@@ -7,7 +7,7 @@ On the left hand menu, click on ** New Item**
    :align: center 
 
 
-Let's call this job **task5**
+Let’s call this job **task5**
 Select **Freestyle Project**
 
 .. image:: ../images/image002.png
@@ -33,7 +33,7 @@ scroll down to the end of the job until you reach the **Build** category.
    :scale: 50 %
    :align: center 
 
-Then add a build step by clicking on **"Add a build step"**
+Then add a build step by clicking on **“Add a build step"**
 
 It will open a drop down list with all the baked in plugins and the additional plugins you could have installed on your Jenkins server.
 
@@ -43,7 +43,7 @@ It will open a drop down list with all the baked in plugins and the additional p
 
 Click on **Invoke Ansible Playbook**
 
-Firstly, let's configure the invocation of the run docker playbook.
+Firstly, let’s configure the invocation of the run docker playbook.
 
 in the playbook path, add the following line:
 **/tmp/task3.yml**
@@ -72,10 +72,10 @@ We will now run the task4.yml Ansible playbook, which is in charge of deploying 
    :scale: 50 %
    :align: center 
 
-Again, we will use the main host file, so you don't need to specify an extra inventory.
+Again, we will use the main host file, so you don’t need to specify an extra inventory.
 
-there are yet no vault credentials available in our configuration. Let's create a new credential entry in Jenkins to store our ansible vault password.
-Click on **Add** on the **Vault Credentials** line.
+there are yet no vault credentials available in our configuration. Let’s create a new credential entry in Jenkins to store our ansible vault password.
+Click on “Add” on the “Vault Credentials” line.
 
 .. image:: ../images/image009.png
    :scale: 50 %
@@ -196,13 +196,6 @@ the **Console Output** button will give you insights on the build steps:
 
     TASK [fch.lbsvc : Add Redirect Virtual Server] *********************************
     changed: [192.168.1.143 -> localhost]
-=======
-Task 4. Jenkins Freestyle jobs calling ansible playbooks.
-=========================================================
-
-1. create a freestyle job by invoking the 2 previous playbooks with extra variables passed as parameters.
-2. create a pipeline as code in order to parallelize the two tasks.
->>>>>>> badc926fc82888652a433bb69cf9fc57042b0d38
 
     PLAY RECAP *********************************************************************
     192.168.1.143              : ok=5    changed=5    unreachable=0    failed=0   
