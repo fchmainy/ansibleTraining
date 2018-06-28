@@ -5,7 +5,7 @@ Task5: Create a Jenkins Freestyle Job
 ---------------------------
 On the left hand menu, click on ** New Item**
 
-.. image:: ../images/image001.png
+.. image:: ../images/image001.jpeg
    :scale: 50 %
    :align: center 
 
@@ -13,11 +13,11 @@ On the left hand menu, click on ** New Item**
 Let’s call this job **task5**
 Select **Freestyle Project**
 
-.. image:: ../images/image002.png
+.. image:: ../images/image002.jpeg
    :scale: 50 %
    :align: center 
 
-.. image:: ../images/image003.png
+.. image:: ../images/image003.jpeg
    :scale: 50 %
    :align: center 
 
@@ -32,7 +32,7 @@ click **Ok**
 
 scroll down to the end of the job until you reach the **Build** category.
 
-.. image:: ../images/image004.png
+.. image:: ../images/image004.jpeg
    :scale: 50 %
    :align: center 
 
@@ -40,7 +40,7 @@ Then add a build step by clicking on **“Add a build step"**
 
 It will open a drop down list with all the baked in plugins and the additional plugins you could have installed on your Jenkins server.
 
-.. image:: ../images/image005.png
+.. image:: ../images/image005.jpeg
    :scale: 50 %
    :align: center 
 
@@ -55,7 +55,7 @@ Do not specify Inventory, as we will use the main inventory (/etc/ansible/hosts)
 
 We need to specify this ansible-playbook needs sudo privileges to be executed:
 
-.. image:: ../images/image006.png
+.. image:: ../images/image006.jpeg
    :scale: 50 %
    :align: center 
 
@@ -65,13 +65,13 @@ We need to specify this ansible-playbook needs sudo privileges to be executed:
 
 Add a new **Invoke Ansible Playbook** as an additional build step of your job:
 
-.. image:: ../images/image007.png
+.. image:: ../images/image007.jpeg
    :scale: 50 %
    :align: center 
 
 We will now run the task4.yml Ansible playbook, which is in charge of deploying the configuration on your bigip:
 
-.. image:: ../images/image008.png
+.. image:: ../images/image008.jpeg
    :scale: 50 %
    :align: center 
 
@@ -80,13 +80,13 @@ Again, we will use the main host file, so you don’t need to specify an extra i
 there are yet no vault credentials available in our configuration. Let’s create a new credential entry in Jenkins to store our ansible vault password.
 Click on “Add” on the “Vault Credentials” line.
 
-.. image:: ../images/image009.png
+.. image:: ../images/image009.jpeg
    :scale: 50 %
    :align: center 
 
 Select **Secret text** as a credential *kind*:
 
-.. image:: ../images/image010.png
+.. image:: ../images/image010.jpeg
    :scale: 50 %
    :align: center 
 
@@ -95,7 +95,7 @@ Then, fill the required fields with the following values:
 	* ID: vaultTask4
 	* Description: Ansible vault password for the lbsvc role execution
 
-.. image:: ../images/image011.png
+.. image:: ../images/image011.jpeg
    :scale: 50 %
    :align: center 
 
@@ -107,7 +107,7 @@ Note:
 
 You can reorder the two playbooks invocations easily by clicking and dragging the 2 **Invoke Ansible Playbook** on their top left corner as the two playbooks are independent of each other.
 
-.. image:: ../images/image012.png
+.. image:: ../images/image012.jpeg
    :scale: 50 %
    :align: center 
 
@@ -119,20 +119,20 @@ Click ** Save **
 -------------------------
 On the left hand menu, you can run the playbook by clicking on the *Build now** button
 
-.. image:: ../images/image013.png
+.. image:: ../images/image013.jpeg
    :scale: 50 %
    :align: center 
 
 On the Build History window on the bottom left corner, you can have details on the execution of your job:
 
-.. image:: ../images/image014.png
+.. image:: ../images/image014.jpeg
    :scale: 50 %
    :align: center 
 
 click on the #number of your execution.
 it will open a new page for this job execution (called build).
 
-.. image:: ../images/image015.png
+.. image:: ../images/image015.jpeg
    :scale: 50 %
    :align: center 
 
