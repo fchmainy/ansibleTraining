@@ -1,243 +1,203 @@
-Task 4. Create an ansible role
-=======================
-Use the init command to initialize the base structure of a new role, saving time on creating the various directories and main.yml files a role requires
+1. Create a new Job
+---------------------------
+On the left hand menu, click on ** New Item**
 
-.. code::
-$ ansible-galaxy init username.task4 --offline
-- username.task4 was created successfully
+.. image:: ../images/image001.png
+   :scale: 50 %
+   :align: center 
 
-You should then have the framework for your role:
-.. code::
-$ ls -R fch.task4/
-fch.task4/:
-README.md  defaults  files  handlers  meta  tasks  templates  tests  vars
 
-fch.task4/defaults:
-main.yml
+Let’s call this job **task5**
+Select **Freestyle Project**
 
-fch.task4/files:
+.. image:: ../images/image002.png
+   :scale: 50 %
+   :align: center 
 
-fch.task4/handlers:
-main.yml
+.. image:: ../images/image003.png
+   :scale: 50 %
+   :align: center 
 
-fch.task4/meta:
-main.yml
+click **Ok**
 
-fch.task4/tasks:
-main.yml
 
-fch.task4/templates:
+2. Configure the job
+--------------------------
+**Add the rundocker playbook invocation to the jenkins job**
 
-fch.task4/tests:
-inventory  test.yml
+(optional) add into the description field: *"This is simple freestyle job to run sequentially 2 ansible playbooks.”*
 
-fch.task4/vars:
-main.yml
+scroll down to the end of the job until you reach the **Build** category.
 
-**Role Variables**
-In the defaults/main.yml file, copy the following content:
-.. code::
-username: "admin"
-password: "admin"
+.. image:: ../images/image004.png
+   :scale: 50 %
+   :align: center 
 
-app_name: "myApp"
-pool_name: "{{ app_name }}_pool"
-redirect_port: "80"
-vip_ip: "10.100.26.143"
-vip_port: "443"
+Then add a build step by clicking on **“Add a build step"**
 
-pool_members:
-- port: "80"
-  host: "10.100.26.144"
-- port: "80"
-  host: “10.100.26.145"
+It will open a drop down list with all the baked in plugins and the additional plugins you could have installed on your Jenkins server.
 
-This is the key/value pairs variables to use in your role.
-here, variables are passed to the **defaults** folder. In the existing fch.run_docker role, variables are passed to the **vars** folder. Both solutions are valid depending on what you want to achieve and the precedence
+.. image:: ../images/image005.png
+   :scale: 50 %
+   :align: center 
+
+Click on **Invoke Ansible Playbook**
+
+Firstly, let’s configure the invocation of the run docker playbook.
+
+in the playbook path, add the following line:
+**/tmp/task3.yml**
+
+Do not specify Inventory, as we will use the main inventory (/etc/ansible/hosts).
+
+We need to specify this ansible-playbook needs sudo privileges to be executed:
+
+.. image:: ../images/image006.png
+   :scale: 50 %
+   :align: center 
+
+
+
+**Add the lbsvc playbook invocation to the jenkins job**
+
+Add a new **Invoke Ansible Playbook** as an additional build step of your job:
+
+.. image:: ../images/image007.png
+   :scale: 50 %
+   :align: center 
+
+We will now run the task4.yml Ansible playbook, which is in charge of deploying the configuration on your bigip:
+
+.. image:: ../images/image008.png
+   :scale: 50 %
+   :align: center 
+
+Again, we will use the main host file, so you don’t need to specify an extra inventory.
+
+there are yet no vault credentials available in our configuration. Let’s create a new credential entry in Jenkins to store our ansible vault password.
+Click on “Add” on the “Vault Credentials” line.
+
+.. image:: ../images/image009.png
+   :scale: 50 %
+   :align: center 
+
+Select **Secret text** as a credential *kind*:
+
+.. image:: ../images/image010.png
+   :scale: 50 %
+   :align: center 
+
+Then, fill the required fields with the following values:
+	* secret: default
+	* ID: vaultTask4
+	* Description: Ansible vault password for the lbsvc role execution
+
+.. image:: ../images/image011.png
+   :scale: 50 %
+   :align: center 
+
 
 Note:
-If multiple variables of the same name are defined in different places, they win in a certain order, which is:
-
-	• extra vars (-e in the command line) always win
-	• then comes connection variables defined in inventory (ansible_ssh_user, etc)
-	• then comes "most everything else" (command line switches, vars in play, included vars, role vars, etc)
-	• then comes the rest of the variables defined in inventory
-	• then comes facts discovered about a system
-	• then "role defaults", which are the most "defaulty" and lose in priority to everything.
-
-https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
-
-**Role Inventory**
-
-paste the following inventory to your hosts file.
-.. code::
-[bigip]
-192.168.1.143
-
-**Role Tasks**
-Copy/paste the following tasks in your tasks/main.yml file:
-..code::
-  - name: Create nodes
-    bigip_node:
-      server: "{{ inventory_hostname }}"
-      user: "{{ username }}"
-      password: "{{ password }}"
-      host: "{{item.host}}"
-      name: "{{item.host}}"
-      validate_certs: False
-    with_items: "{{pool_members}}"
-    delegate_to: localhost
-
-  - name: Create pool
-    bigip_pool:
-      server: "{{ inventory_hostname }}"
-      user: "{{ username }}"
-      password: "{{ password }}"
-      name: "{{pool_name}}"
-      lb_method: "round-robin"
-      monitors: "/Common/http"
-      validate_certs: False
-    delegate_to: localhost
-
-  - name: Add Pool members
-    bigip_pool_member:
-      server: "{{ inventory_hostname }}"
-      user: "{{ username }}"
-      password: "{{ password }}"
-      name: "{{item.host}}"
-      host: "{{item.host}}"
-      port: "{{item.port}}"
-      pool: "{{pool_name}}"
-      validate_certs: False
-    with_items: "{{pool_members}}"
-    delegate_to: localhost
-
-  - name: Add Virtual Server
-    bigip_virtual_server:
-      server: "{{ inventory_hostname }}"
-      user: "{{ username }}"
-      password: "{{ password }}"
-      name: "{{ app_name }}_vs_https"
-      destination: "{{ vip_ip }}"
-      port: "{{ vip_port }}"
-      all_profiles:
-       - http
-       - name: clientssl
-         context: client-side
-      pool: "{{pool_name}}"
-      snat: "automap"
-      irules:
-      - "_sys_https_redirect"
-      validate_certs: False
-    delegate_to: localhost
-
-  - name: Add Redirect Virtual Server
-    bigip_virtual_server:
-      server: "{{ inventory_hostname }}"
-      user: "{{ username }}"
-      password: "{{ password }}"
-      name: "{{ app_name }}_vs_http_redirect"
-      destination: "{{ vip_ip }}"
-      port: "80"
-      all_profiles:
-       - http
-      irules:
-      - "_sys_https_redirect"
-      validate_certs: False
-    delegate_to: localhost
-
-**(Optional)Create your meta  file** 
-This is mainly for documentation, and to help you find the best role for reuse…
-
-.. code::
-galaxy_info:
-  author: <Your name>
-  company: <Your Company
-  license: license (GPLv2, CC-BY, etc)
-  min_ansible_version: 2.5
-  platforms:
-    - name: Ubuntu
-      versions:
-      - all
-  categories:
-      - ….
-  galaxy_tags:
-    - bigip
-    - networking
-    - selfip
-    - bigip
-    - F5
-
-Securing sensitive information
----------------------------------------
-
-Keeping passwords in clear text in probably the worst thing we have done yet. Let’s secure it using ansible vault (https://docs.ansible.com/ansible/2.4/vault.html).
-“Vault” is a feature of ansible that allows keeping sensitive data such as passwords or keys in encrypted files, rather than as plaintext in your playbooks or roles. These vault files can then be distributed or placed in source control.
-
-The default and easiest way is to encrypt the whole variable file and ask for the vault password when running the playbook.
-
-As of version 2.3, Ansible also supports encrypting single values inside a YAML file, using the !vault tag to let YAML and Ansible know it uses special processing. This feature is covered in more details below.
-
-The ansible-vault encrypt_string command will encrypt and format a provided string into a format that can be included in ansible-playbook YAML files.
-
-To encrypt your admin password as a cli arg:
-
-.. code::
-$ ansible-vault encrypt_string 'admin' --name 'password'
-New Vault password:
-Confirm New Vault password:
-password: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          38616233643963386663646565666535316639353634666636656338643562363961333362323134
-          6663633034333936303936393666303165356232373230330a356635326663393262383331656438
-          30323265646362383339646438376366643430393930333139356433626634616635386465666239
-          3333646665643662630a376237643064343466313066626333356439633330336538616461323364
-          3865
-Encryption successful
+	You have seen Jenkins can store different kind of confidential data in its credential store.
+	We could have created our BigIP passwords in the Jenkins store which is still a valid method and probably an easier way of managing all the credentials from a central standpoint but it will come to the discussion about what is the safest solution between ansible vault (AES256) and Jenkins credential store (AES128).
 
 
-Then replace the password line in your defaults/main.yml file
-.. code:
-username: "admin"
-password: "admin"
-…
+You can reorder the two playbooks invocations easily by clicking and dragging the 2 **Invoke Ansible Playbook** on their top left corner as the two playbooks are independent of each other.
 
-by 
-.. code:
-username: "admin"
-password: "admin"
-password: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          38616233643963386663646565666535316639353634666636656338643562363961333362323134
-          6663633034333936303936393666303165356232373230330a356635326663393262383331656438
-          30323265646362383339646438376366643430393930333139356433626634616635386465666239
-          3333646665643662630a376237643064343466313066626333356439633330336538616461323364
-          3865
+.. image:: ../images/image012.png
+   :scale: 50 %
+   :align: center 
 
-Running your playbook:
--------------------------------
-
-create a playbook called task5.yml and paste the following content:
-.. code::
----
-- name: Configure http service
-  hosts: prod
-  gather_facts: false
-  roles:
-    - { role: fch.lbsvc }
-
-then run your playbook:
-ansible-playbook task5.yml -vvv
-
-you can check on your BigIP the service have been created.
-
-You can easily run the same role to add pool members to the configuration (remember: F5 ansible playbooks are idempotent):
-ansible-playbook task5.yml --ask-sudo --extra-vault-pass 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}]”'
-
-or run the same playbook for a new service without touching the playbook YAML file:
-ansible-playbook task5.yml --ask-sudo --extra-vault-pass 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}] app_name="my2ndApp" vip_ip="10.100.26.43"'
+Click ** Save **
 
 
 
+3. Run the freestyle job
+-------------------------
+On the left hand menu, you can run the playbook by clicking on the *Build now** button
 
+.. image:: ../images/image013.png
+   :scale: 50 %
+   :align: center 
 
+On the Build History window on the bottom left corner, you can have details on the execution of your job:
+
+.. image:: ../images/image014.png
+   :scale: 50 %
+   :align: center 
+
+click on the #number of your execution.
+it will open a new page for this job execution (called build).
+
+.. image:: ../images/image015.png
+   :scale: 50 %
+   :align: center 
+
+the **Console Output** button will give you insights on the build steps:
+
+.. parsed-literal::
+
+    Started by user Jenkins admin
+    Building in workspace /var/lib/jenkins/workspace/task5
+    [task5] $ ansible-playbook /tmp/task3.yml -f 5
+    [DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of Ansible Become, 
+    which is a generic framework. See become_user. , use become instead. This 
+    feature will be removed in version 2.8. Deprecation warnings can be disabled by
+    setting deprecation_warnings=False in ansible.cfg.
+    [WARNING]: Found variable using reserved name: remote_user
+
+    PLAY [me] **********************************************************************
+
+    TASK [Gathering Facts] *********************************************************
+    ok: [127.0.0.1]
+
+    TASK [fch.rundocker : create and run a docker container] ***********************
+    changed: [127.0.0.1 -> localhost] => (item=9081)
+    changed: [127.0.0.1 -> localhost] => (item=9082)
+    changed: [127.0.0.1 -> localhost] => (item=9083)
+
+    PLAY RECAP *********************************************************************
+    127.0.0.1                  : ok=2    changed=1    unreachable=0    failed=0   
+
+    [task5] $ ansible-playbook /tmp/task4.yml -f 5 --vault-password-file /var/lib/jenkins/workspace/task5/vault8754706889869935773.password
+    [DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of Ansible Become, 
+    which is a generic framework. See become_user. , use become instead. This 
+    feature will be removed in version 2.8. Deprecation warnings can be disabled by
+    setting deprecation_warnings=False in ansible.cfg.
+
+    PLAY [Configure http service] **************************************************
+
+    TASK [fch.lbsvc : Create nodes] ************************************************
+    changed: [192.168.1.143 -> localhost] => (item={u'host': u'10.100.26.144', u'port': u'80'})
+    changed: [192.168.1.143 -> localhost] => (item={u'host': u'10.100.26.145', u'port': u'80'})
+    [DEPRECATION WARNING]: Param 'user' is deprecated. See the module docs for more
+    information. This feature will be removed in version 2.9. Deprecation warnings
+    can be disabled by setting deprecation_warnings=False in ansible.cfg.
+    [DEPRECATION WARNING]: Param 'password' is deprecated. See the module docs for 
+    more information. This feature will be removed in version 2.9. Deprecation 
+    warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+    [DEPRECATION WARNING]: Param 'server' is deprecated. See the module docs for 
+    more information. This feature will be removed in version 2.9. Deprecation 
+    warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+    [DEPRECATION WARNING]: Param 'validate_certs' is deprecated. See the module 
+    docs for more information. This feature will be removed in version 2.9. 
+    Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+    ansible.cfg.
+
+    TASK [fch.lbsvc : Create pool] *************************************************
+    changed: [192.168.1.143 -> localhost]
+
+    TASK [fch.lbsvc : Add Pool members] ********************************************
+    changed: [192.168.1.143 -> localhost] => (item={u'host': u'10.100.26.144', u'port': u'80'})
+    changed: [192.168.1.143 -> localhost] => (item={u'host': u'10.100.26.145', u'port': u'80'})
+
+    TASK [fch.lbsvc : Add Virtual Server] ******************************************
+    changed: [192.168.1.143 -> localhost]
+
+    TASK [fch.lbsvc : Add Redirect Virtual Server] *********************************
+    changed: [192.168.1.143 -> localhost]
+
+    PLAY RECAP *********************************************************************
+    192.168.1.143              : ok=5    changed=5    unreachable=0    failed=0   
+
+    Finished: SUCCESS
