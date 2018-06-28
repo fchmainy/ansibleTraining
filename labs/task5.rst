@@ -5,7 +5,7 @@ Task5: Create a Jenkins Freestyle Job
 ---------------------------
 On the left hand menu, click on ** New Item**
 
-.. image:: ../images/image001.jpeg
+.. image:: ../images/image001.jpg
    :scale: 50 %
    :align: center 
 
@@ -13,11 +13,11 @@ On the left hand menu, click on ** New Item**
 Let’s call this job **task5**
 Select **Freestyle Project**
 
-.. image:: ../images/image002.jpeg
+.. image:: ../images/image002.jpg
    :scale: 50 %
    :align: center 
 
-.. image:: ../images/image003.jpeg
+.. image:: ../images/image003.jpg
    :scale: 50 %
    :align: center 
 
@@ -32,7 +32,7 @@ click **Ok**
 
 scroll down to the end of the job until you reach the **Build** category.
 
-.. image:: ../images/image004.jpeg
+.. image:: ../images/image004.jpg
    :scale: 50 %
    :align: center 
 
@@ -40,7 +40,7 @@ Then add a build step by clicking on **“Add a build step"**
 
 It will open a drop down list with all the baked in plugins and the additional plugins you could have installed on your Jenkins server.
 
-.. image:: ../images/image005.jpeg
+.. image:: ../images/image005.jpg
    :scale: 50 %
    :align: center 
 
