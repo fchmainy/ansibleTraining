@@ -1,61 +1,116 @@
 Task 1. Create an inventory
 ===========================
 
-Once inventory hosts are listed, variables can be assigned to them in simple text files (in a subdirectory called ‘group_vars/’ or ‘host_vars/’ or directly in the inventory file.
+Let's create a simple ansible inventory! For our lab we will use the main inventory file (/etc/ansible/hosts) with the following content:
 
-As described above, it is easy to assign variables to hosts that will be used later in playbooks:
+.. parsed-literal::
 
-.. code::
-[atlanta]
-host1 http_port=80 maxRequestsPerChild=808
-host2 http_port=303 maxRequestsPerChild=909
-Variables can also be applied to an entire group at once:
+	[paris]
+	192.168.1.101
+	192.168.1.102
+	192.168.2.11
+	192.168.2.12
 
-The INI way:
+	[bigip]
+	192.168.1.101
+	192.168.1.102
 
-.. code::
-[atlanta]
-host1
-host2
+	[webservers]
+	192.168.2.11	apache_version=2.6
+	192.168.2.12	apache_version=2.6
 
-[atlanta:vars]
-ntp_server=ntp.atlanta.example.com
-proxy=proxy.atlanta.example.com
+	[production]
+	192.168.1.102
+	192.168.2.12
 
-Or, as already mentioned, use a dynamic inventory to pull your inventory from data sources like EC2, Rackspace, or OpenStack.
+	[lab]
+	192.168.1.101
+	192.168.2.11
+
+	[waf]
+	mywaf.f5demo.fch
+
+This is as simple as that!!!
+
+Besides being simple, this is really powerful in the defintion of targets:
+	* **webservers:bigip** is a logical OR operation so it means **paris**
+	* **paris:!webserverss** means paris devices *except* webservers, so: ***bigip**
+	* **bigip:&production** is a logical intersection, so:  **192.168.1.102**
+	* **paris:&bigip:!lab** is a combinaison corresponding to 192.168.1.102
 
 
-**The preferred practice in Ansible is to not store variables in the main inventory file.**
-Assuming the inventory file path is:
-
-/etc/ansible/hosts
-If the host is named ‘foosball’, and in groups ‘raleigh’ and ‘webservers’, variables in YAML files at the following locations will be made available to the host:
-
-/etc/ansible/group_vars/raleigh # can optionally end in '.yml', '.yaml', or '.json'
-/etc/ansible/group_vars/webservers
-/etc/ansible/host_vars/foosball
-For instance, suppose you have hosts grouped by datacenter, and each datacenter uses some different servers. The data in the groupfile ‘/etc/ansible/group_vars/raleigh’ for the ‘raleigh’ group might look like:
-
-.. code::
-	---
-	ntp_server: acme.example.org
-	database_server: storage.example.org
-
-It is okay if these files do not exist, as this is an optional feature.
-As an advanced use case, you can create directories named after your groups or hosts, and Ansible will read all the files in these directories. An example with the ‘raleigh’ group:
-
-.. code::
-	/etc/ansible/group_vars/raleigh/db_settings
-	/etc/ansible/group_vars/raleigh/cluster_settings
+Although it is not recommended to add variables to the main inventory file we will do it for lab purpose only. In real life, we higly recommend using dedicated INI files such as:
+	* /etc/ansible/group_vars/bigip
+	* /etc/ansible/group_vars/webservers
+	* /etc/ansible/host_vars/mywaf.f5demo.fch
 
 
 In order to check the inventory
+
 .. code::
-	# ansible-inventory --list
 
-
-
-
-
-
-
+	$ ansible-inventory --list
+	{
+	    "_meta": {
+		"hostvars": {
+		    "192.168.1.101": {},
+		    "192.168.1.102": {},
+		    "192.168.2.11": {
+			"apache_version": 2.6
+		    },
+		    "192.168.2.12": {
+			"apache_version": 2.6
+		    },
+		    "mywaf.f5demo.fch": {}
+		}
+	    },
+	    "all": {
+		"children": [
+		    "bigip",
+		    "lab",
+		    "paris",
+		    "production",
+		    "ungrouped",
+		    "waf",
+		    "webservers"
+		]
+	    },
+	    "bigip": {
+		"hosts": [
+		    "192.168.1.101",
+		    "192.168.1.102"
+		]
+	    },
+	    "lab": {
+		"hosts": [
+		    "192.168.1.101",
+		    "192.168.2.11"
+		]
+	    },
+	    "paris": {
+		"hosts": [
+		    "192.168.1.101",
+		    "192.168.1.102",
+		    "192.168.2.11",
+		    "192.168.2.12"
+		]
+	    },
+	    "production": {
+		"hosts": [
+		    "192.168.1.102",
+		    "192.168.2.12"
+		]
+	    },
+	    "ungrouped": {},
+	    "waf": {
+		"hosts": [
+		    "mywaf.f5demo.fch"
+		]
+	    },
+	    "webservers": {
+		"hosts": [
+		    "192.168.2.11",
+		    "192.168.2.12"
+		]
+	    }
+	}
