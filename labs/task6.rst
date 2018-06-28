@@ -12,13 +12,13 @@ pipelines as code (do not panic! you won’t have to code here, we will provide 
 ---------------
 Let’s begin by creating a new job:
 
-.. image:: ../images/image016.png
+.. image:: ../images/image016.jpeg
    :scale: 50 %
    :align: center 
 
 Let's call this pipeline **task6** and choose the **pipeline** mode
 
-.. image:: ../images/image017.png
+.. image:: ../images/image017.jpeg
    :scale: 50 %
    :align: center 
 
@@ -35,13 +35,13 @@ We will add parameters in this pipeline so users can add different values to ove
 
 click on the **This project is parameterised** checkbox, then add a string parameter:
 
-.. image:: ../images/image018.png
+.. image:: ../images/image018.jpeg
    :scale: 50 %
    :align: center 
 
 We will call this parameter **vsIP** which corresponds to the IP Address of the F5 Virtual Server.
 
-.. image:: ../images/image019.png
+.. image:: ../images/image019.jpeg
    :scale: 50 %
    :align: center 
 
@@ -53,10 +53,10 @@ Do the same for:
 
 You can reorganize parameters as you wish, there is no impact on the pipeline. **BUT be careful of the syntax and the case sensitivity of parameter names**.
 
-.. image:: ../images/image020.png
+.. image:: ../images/image020.jpeg
    :scale: 50 %
    :align: center 
-   .. image:: ../images/image021.png
+   .. image:: ../images/image021.jpeg
    :scale: 50 %
    :align: center 
 
@@ -158,13 +158,13 @@ Ensure the definition is ** Pipeline script** in the drop down list and paste th
 
 To run your pipeline, click on **Build with parameters**
 
-.. image:: ../images/image022.png
+.. image:: ../images/image022.jpeg
    :scale: 50 %
    :align: center 
 
 It will open the following page:
 
-.. image:: ../images/image023.png
+.. image:: ../images/image023.jpeg
    :scale: 50 %
    :align: center 
 
@@ -179,7 +179,7 @@ then click *Build*
 You can visualize the execution of the pipeline in the **Console Output** of your build.
 On the **Blue Ocean** interface the build is shown as follow:
 
-.. image:: ../images/image024.png
+.. image:: ../images/image024.jpeg
    :scale: 50 %
    :align: center 
 
