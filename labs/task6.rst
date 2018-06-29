@@ -125,7 +125,7 @@ Ensure the definition is ** Pipeline script** in the drop down list and paste th
                         listPool.add("{\"port\":\"" + port +"\", \"host\": \"" + poolMemberIP + "\"}")
                         println "my list: $listPool"
                         
-                        // [{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}] 
+                        // [{"port":"9xxx","host:"10.1.10.20"},{"port":"9xxx","host:"10.1.10.20"}] 
                     }
                     env.pools = listPool.join(",")
                     echo "Pool list: $pools"
@@ -170,9 +170,9 @@ It will open the following page:
 
 Enter the following values:
 	* appName: 	<anything you want>
-	* vsIP: 		10.100.1.192
+	* vsIP: 	10.1.10.20
 	* websrvPorts:	9034,9035,9036,9037
-	* websrvIP: 	10.100.10.12
+	* websrvIP: 	10.1.20.111
 
 then click *Build*
 
