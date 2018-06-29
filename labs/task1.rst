@@ -5,26 +5,34 @@ Let's create a simple ansible inventory! For our lab we will use the main invent
 
 .. parsed-literal::
 
-	[paris]
-	192.168.1.101
-	192.168.1.102
-	192.168.2.11
-	192.168.2.12
-
+	[datacenter]
+	10.1.1.2
+	10.1.1.3
+	10.1.1.5
+	10.1.1.10
+	10.1.10.20
+	10.1.10.100
+	
 	[bigip]
-	192.168.1.101
-	192.168.1.102
-
+	10.1.1.10
+	10.1.1.5
+	10.1.1.11
+	
 	[webservers]
-	192.168.2.11	apache_version=2.6
-	192.168.2.12	apache_version=2.6
-
+	10.1.10.20	apache_version=2.6
+	10.1.10.100	apache_version=2.6
+	10.1.10.101
+	10.1.10.102
+	10.1.10.103
+	
 	[production]
-	192.168.1.102
-	192.168.2.12
+	10.1.1.10
+	1.1.10.20
+	192.168.1.12
 
 	[lab]
-	192.168.1.101
+	10.1.1.3
+	10.1.1.5
 	192.168.2.11
 
 	[waf]
@@ -33,10 +41,10 @@ Let's create a simple ansible inventory! For our lab we will use the main invent
 This is as simple as that!!!
 
 Besides being simple, this is really powerful in the defintion of targets:
-	* **webservers:bigip** is a logical OR operation so it means **paris**
-	* **paris:!webserverss** means paris devices *except* webservers, so: ***bigip**
-	* **bigip:&production** is a logical intersection, so:  **192.168.1.102**
-	* **paris:&bigip:!lab** is a combinaison corresponding to 192.168.1.102
+	* **webservers:bigip** is a logical OR operation so it corresponds to all IPs in these groups
+	* **datacenter:!webservers** means paris devices *except* webservers, so: ***10.1.1.2,10.1.1.3**
+	* **bigip:&production** is a logical intersection, so:  **10.1.1.10**
+	* **datacenter:&bigip:!lab** is a combinaison corresponding to **10.1.1.10**
 
 
 Although it is not recommended to add variables to the main inventory file we will do it for lab purpose only. In real life, we higly recommend using dedicated INI files such as:
