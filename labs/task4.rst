@@ -82,7 +82,7 @@ paste the following inventory to your hosts file.
 .. parsed-literal::
 
 	[bigip]
-	192.168.1.143
+	10.1.1.10
 
 **Role Tasks**
 Copy/paste the following tasks in your tasks/main.yml file:
