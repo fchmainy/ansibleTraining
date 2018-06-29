@@ -3,6 +3,14 @@ Task5: Create a Jenkins Freestyle Job
 
 1. Create a new Job
 ---------------------------
+
+On the jumphost, go to: http://127.0.0.1:8080
+
+and log in with the jenkins administrator credentials:
+	* User: **jenkins**
+	* Password: **default**
+
+
 On the left hand menu, click on ** New Item**
 
 .. image:: ../images/image001.jpg
