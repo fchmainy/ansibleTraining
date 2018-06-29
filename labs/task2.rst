@@ -21,6 +21,9 @@ https://docs.ansible.com/ansible/2.5/user_guide/playbooks.html
 
 copy and paste the following content in a YAML playbookfile. let’s call it: task2.yml
 
+.. code::
+  $ vi /tmp/task2.yml
+
 .. parsed-literal::
   ---
   - hosts: production:&bigip
@@ -114,7 +117,7 @@ run the playbook using the following command:
 
 .. code::
 
-  $ ansible-playbook task2.yml -vvv
+  $ ansible-playbook /tmp/task2.yml -vvv
 
 *Note: You can run the playbook multiple time as F5 ansible modules are idempotent (https://en.wikipedia.org/wiki/Idempotence) *
 
