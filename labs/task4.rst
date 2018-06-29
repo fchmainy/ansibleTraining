@@ -52,11 +52,13 @@ In the defaults/main.yml file, copy the following content:
 	vip_port: "443"
 
 	pool_members:
-	- port: "80"
-	  host: "10.100.26.144"
-	- port: "80"
-	  host: “10.100.26.145"
-
+	- port: "9081"
+	  host: "10.1.10.20"
+	- port: "9082"
+	  host: “10.1.10.20"
+	- port: "9083"
+	  host: “10.1.10.20"
+	  
 This is the key/value pairs variables to use in your role.
 here, variables are passed to the **defaults** folder. In the existing fch.run_docker role, variables are passed to the **vars** folder. Both solutions are valid depending on what you want to achieve and the precedence
 
