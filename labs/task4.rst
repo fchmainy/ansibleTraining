@@ -7,37 +7,37 @@ Use the init command to initialize the base structure of a new role, saving time
 
 .. code::
 
-	$ ansible-galaxy init username.task4 --offline
-	- username.task4 was created successfully
+	$ ansible-galaxy init username.lbsvc --offline
+	- username.lbsvc was created successfully
 
 You should then have the framework for your role:
 
 .. parsed-literal::
 
-	$ ls -R fch.task4/
-	fch.task4/:
+	$ ls -R username.lbsvc/
+	username.lbsvc/:
 	README.md  defaults  files  handlers  meta  tasks  templates  tests  vars
 
-	fch.task4/defaults:
+	username.lbsvc/defaults:
 	main.yml
 
-	fch.task4/files:
+	username.lbsvc/files:
 
-	fch.task4/handlers:
+	username.lbsvc/handlers:
 	main.yml
 
-	fch.task4/meta:
+	username.lbsvc/meta:
 	main.yml
 
-	fch.task4/tasks:
+	username.lbsvc/tasks:
 	main.yml
 
-	fch.task4/templates:
+	username.lbsvc/templates:
 
-	fch.task4/tests:
+	username.lbsvc/tests:
 	inventory  test.yml
 
-	fch.task4/vars:
+	username.lbsvc/vars:
 	main.yml
 
 2. Create the Role Variables
@@ -233,6 +233,12 @@ by the encrypted string previously generated:
 		  3864663163643433390a333132643562663034393862383861616635666335313032663638663937
 		  6665
 
+Finally copy your role to /etc/ansible/roles:
+
+.. code::
+
+	$ cp username.lbsvc /etc/ansible/roles/
+
 Running your playbook:
 -------------------------------
 
@@ -245,17 +251,18 @@ create a playbook called /tmp/task4.yml and paste the following content:
 	  hosts: prod
 	  gather_facts: false
 	  roles:
-	    - { role: fch.lbsvc }
+	    - { role: username.lbsvc }
 
 then run your playbook:
 
 .. parsed-literal::
 
-$ ansible-playbook /tmp/task4.yml --ask-vault-pass -vvv
+	$ ansible-playbook /tmp/task4.yml --ask-vault-pass -vvv
 
 you can check on your BigIP the service have been created.
 
 You can easily run the same role to add pool members to the configuration (remember: F5 ansible playbooks are idempotent):
+
 .. parsed-literal::
 
 	$ ansible-playbook /tmp/task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"9084","host:"10.1.10.20"},{"port":"9085","host:"10.1.10.20"}]”'
