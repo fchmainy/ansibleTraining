@@ -73,6 +73,7 @@ If multiple variables of the same name are defined in different places, they win
 **Role Inventory**
 
 paste the following inventory to your hosts file.
+
 .. parsed-literal::
 
 	[bigip]
