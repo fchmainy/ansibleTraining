@@ -1,7 +1,7 @@
 Task 2. Create a simple playbook
 ===========================
-Introduction
-------------
+1. Introduction
+---------------
 Playbooks are Ansible’s configuration, deployment, and orchestration language. They can describe a policy you want your remote systems to enforce, or a set of steps in a general IT process.
 
 If Ansible modules are the tools in your workshop, playbooks are your instruction manuals, and your inventory of hosts are your raw material.
@@ -15,18 +15,8 @@ Playbooks are designed to be human-readable and are developed in a basic text la
 https://docs.ansible.com/ansible/2.5/user_guide/playbooks.html
 
 
-Variables
-------------
-
-
-
-Conditions
--------------
-
-
-
-Loops
---------
+2. Create playbook
+------------------
 
 
 copy and paste the following content in a YAML playbookfile. let’s call it: task2.yml
