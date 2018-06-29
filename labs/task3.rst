@@ -78,8 +78,7 @@ Now, let’s run this role with a simple playbook. There is already a test playb
  ---
  - hosts: me
    remote_user: fchmainy
-   strategy: debug
-   gather_facts: yes
+   gather_facts: no
 
    vars:
      container_ports:
