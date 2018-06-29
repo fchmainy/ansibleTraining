@@ -55,9 +55,9 @@ In the defaults/main.yml file, copy the following content:
 	- port: "9081"
 	  host: "10.1.10.20"
 	- port: "9082"
-	  host: “10.1.10.20"
+	  host: "10.1.10.20"
 	- port: "9083"
-	  host: “10.1.10.20"
+	  host: "10.1.10.20"
 	  
 This is the key/value pairs variables to use in your role.
 here, variables are passed to the **defaults** folder. In the existing fch.run_docker role, variables are passed to the **vars** folder. Both solutions are valid depending on what you want to achieve and the precedence
