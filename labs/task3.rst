@@ -76,7 +76,7 @@ Now, let’s run this role with a simple playbook. There is already a test playb
 
 .. parsed-literal::
  ---
- - hosts: me
+ - hosts: webservers:&production
    remote_user: fchmainy
    gather_facts: no
 
