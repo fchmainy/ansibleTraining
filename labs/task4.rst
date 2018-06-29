@@ -1,5 +1,8 @@
 Task 4. Create an ansible role
-=======================
+==============================
+
+1. Create the Role Structure
+------------------------
 Use the init command to initialize the base structure of a new role, saving time on creating the various directories and main.yml files a role requires
 
 .. code::
@@ -37,7 +40,9 @@ You should then have the framework for your role:
 	fch.task4/vars:
 	main.yml
 
-**Role Variables**
+2. Create the Role Variables
+----------------------------
+
 In the defaults/main.yml file, copy the following content:
 
 .. parsed-literal::
@@ -49,7 +54,7 @@ In the defaults/main.yml file, copy the following content:
 	app_name: "myAppTask4"
 	pool_name: "{{ app_name }}_pool"
 	redirect_port: "80"
-	vip_ip: "10.100.26.143"
+	vip_ip: "10.1.20.101"
 	vip_port: "443"
 
 	pool_members:
@@ -75,16 +80,9 @@ If multiple variables of the same name are defined in different places, they win
 
 *https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable*
 
-**Role Inventory**
 
-paste the following inventory to your hosts file.
-
-.. parsed-literal::
-
-	[bigip]
-	10.1.1.10
-
-**Role Tasks**
+3. Create the Role Tasks
+------------------------
 Copy/paste the following tasks in your tasks/main.yml file:
 
 .. parsed-literal::
@@ -158,7 +156,10 @@ Copy/paste the following tasks in your tasks/main.yml file:
 	      validate_certs: False
 	    delegate_to: localhost
 
-**(Optional)Create your meta  file** 
+
+4. (Optional)Create your role meta file
+---------------------------------------
+
 This is mainly for documentation, and to help you find the best role for reuse…
 
 .. parsed-literal::
@@ -180,7 +181,9 @@ This is mainly for documentation, and to help you find the best role for reuse�
 	    - bigip
 	    - F5
 
-Securing sensitive information
+
+
+5. Securing sensitive information
 ---------------------------------------
 
 Keeping passwords in clear text in probably the worst thing we have done yet :( Let’s secure it using ansible vault (https://docs.ansible.com/ansible/2.4/vault.html).
@@ -211,7 +214,7 @@ To encrypt your admin password as a cli arg:
 Then replace the password line in your defaults/main.yml file
 .. parsed-literal::
 	username: "admin"
-	password: "admin"
+	password: "supernetops"
 	…
 
 by the encrypted string previously generated:
@@ -245,20 +248,20 @@ then run your playbook:
 
 .. parsed-literal::
 
-$ ansible-playbook task4.yml --ask-vault-pass -vvv
+$ ansible-playbook /tmp/task4.yml --ask-vault-pass -vvv
 
 you can check on your BigIP the service have been created.
 
 You can easily run the same role to add pool members to the configuration (remember: F5 ansible playbooks are idempotent):
 .. parsed-literal::
 
-	$ ansible-playbook task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}]”'
+	$ ansible-playbook /tmp/task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"9084","host:"10.1.10.20"},{"port":"9085","host:"10.1.10.20"}]”'
 
 or run the same playbook for a new service without touching the playbook YAML file:
 
 .. parsed-literal::
 
-	$ ansible-playbook task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}] app_name="my2ndApp" vip_ip="10.100.26.43"'
+	$ ansible-playbook /tmp/task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"9082","host:"10.1.10.20"},{"port":"9081","host:"10.1.10.20"}] app_name="my2ndApp_task4" vip_ip="10.1.20.102"'
 
 You can run it as many time as you want as it is... did I already told you about idempotency?
 
