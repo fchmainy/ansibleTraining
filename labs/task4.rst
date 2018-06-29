@@ -8,6 +8,7 @@ Use the init command to initialize the base structure of a new role, saving time
 	- username.task4 was created successfully
 
 You should then have the framework for your role:
+
 .. parsed-literal::
 
 	$ ls -R fch.task4/
@@ -38,6 +39,7 @@ You should then have the framework for your role:
 
 **Role Variables**
 In the defaults/main.yml file, copy the following content:
+
 .. parsed-literal::
 
 	username: "admin"
