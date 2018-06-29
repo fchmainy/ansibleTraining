@@ -42,6 +42,7 @@ In the defaults/main.yml file, copy the following content:
 
 .. parsed-literal::
 
+	---
 	username: "admin"
 	password: "supernetops"
 
