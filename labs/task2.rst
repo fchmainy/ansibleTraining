@@ -23,7 +23,7 @@ copy and paste the following content in a YAML playbookfile. let’s call it: ta
 
 .. parsed-literal::
   ---
-  - hosts: prod
+  - hosts: production:&bigip
     remote_user: fchmainy
     gather_facts: false
     vars:
