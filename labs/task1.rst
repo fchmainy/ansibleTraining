@@ -14,9 +14,9 @@ Let's create a simple ansible inventory! For our lab we will use the main invent
 	10.1.10.100
 	
 	[bigip]
-	10.1.1.10
-	10.1.1.5
-	10.1.1.11
+	10.1.1.10	tmos_version=13.1
+	10.1.1.5	tmos_version=13.1
+	10.1.1.11	tmos_version=12.1
 	
 	[webservers]
 	10.1.10.20	apache_version=2.6
@@ -27,7 +27,7 @@ Let's create a simple ansible inventory! For our lab we will use the main invent
 	
 	[production]
 	10.1.1.10
-	1.1.10.20
+	10.1.10.20
 	192.168.1.12
 
 	[lab]
