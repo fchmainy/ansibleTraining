@@ -113,9 +113,9 @@ let’s check if our containers have been created:
 
  $ sudo docker ps
  CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
- f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9083->80/tcp   myapp_9083
- 134e85ab982e        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9082->80/tcp   myapp_9082
- d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9081->80/tcp   myapp_9081
+ f026c78b0f74        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       10.1.10.20:9083->80/tcp   myapp_9083
+ 134e85ab982e        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       10.1.10.20:9082->80/tcp   myapp_9082
+ d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       10.1.10.20:9081->80/tcp   myapp_9081
 
 These variables can be overridden easily by passing the variables as **extra-vars** while running the playbook
 
@@ -124,8 +124,8 @@ These variables can be overridden easily by passing the variables as **extra-var
  $ ansible-playbook /tmp/task3.yml --ask-sudo --extra-vars 'container_ports=["9084","9085"]'
  $ sudo docker ps
  CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                  NAMES
- d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9085->80/tcp   myapp_9085
- 037a4b004339        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       0.0.0.0:9084->80/tcp   myapp_9084
- 9c10a5e70584        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9083->80/tcp   myapp_9083
- f510d393ed53        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9082->80/tcp   myapp_9082
- 796c06cb7437        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       0.0.0.0:9081->80/tcp   myapp_9081
+ d95802d44ced        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       10.1.10.20:9085->80/tcp   myapp_9085
+ 037a4b004339        f5devcentral/f5-demo-app   "npm start"         14 minutes ago      Up 14 minutes       10.1.10.20:9084->80/tcp   myapp_9084
+ 9c10a5e70584        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       10.1.10.20:9083->80/tcp   myapp_9083
+ f510d393ed53        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       10.1.10.20:9082->80/tcp   myapp_9082
+ 796c06cb7437        f5devcentral/f5-demo-app   "npm start"         5 days ago          Up 17 minutes       10.1.10.20:9081->80/tcp   myapp_9081
