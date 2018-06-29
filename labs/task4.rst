@@ -86,7 +86,8 @@ If multiple variables of the same name are defined in different places, they win
 Copy/paste the following tasks in your tasks/main.yml file:
 
 .. parsed-literal::
-
+	
+	---
 	  - name: Create nodes
 	    bigip_node:
 	      server: "{{ inventory_hostname }}"
