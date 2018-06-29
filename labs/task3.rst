@@ -77,7 +77,7 @@ Now, let’s run this role with a simple playbook. There is already a test playb
 .. parsed-literal::
  ---
  - hosts: webservers:&production
-   remote_user: fchmainy
+   remote_user: ubuntu
    gather_facts: no
 
    vars:
