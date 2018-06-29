@@ -237,7 +237,7 @@ Finally copy your role to /etc/ansible/roles:
 
 .. code::
 
-	$ cp username.lbsvc /etc/ansible/roles/
+	$ sudo cp -R username.lbsvc /etc/ansible/roles/
 
 Running your playbook:
 -------------------------------
