@@ -43,9 +43,9 @@ In the defaults/main.yml file, copy the following content:
 .. parsed-literal::
 
 	username: "admin"
-	password: "admin"
+	password: "supernetops"
 
-	app_name: "myApp"
+	app_name: "myAppTask4"
 	pool_name: "{{ app_name }}_pool"
 	redirect_port: "80"
 	vip_ip: "10.100.26.143"
