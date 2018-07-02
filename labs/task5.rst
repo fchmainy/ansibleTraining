@@ -108,7 +108,7 @@ Select **Secret text** as a credential *kind*:
    :align: center 
 
 Then, fill the required fields with the following values:
-	* secret: default
+	* secret: **Your Vault Password**
 	* ID: vaultTask4
 	* Description: Ansible vault password for the lbsvc role execution
 
