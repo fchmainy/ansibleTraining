@@ -31,7 +31,7 @@ copy and paste the following content in a YAML playbookfile. let’s call it: ta
     gather_facts: false
     vars:
       username: "admin"
-      password: "admin"
+      password: "supernetops"
       app_name: "myApp"
       pool_name: "{{ app_name }}_pool"
       redirect_port: "80"
