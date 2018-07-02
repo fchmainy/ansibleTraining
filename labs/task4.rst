@@ -160,7 +160,7 @@ Copy/paste the following tasks in your tasks/main.yml file:
 4. (Optional)Create your role meta file
 ---------------------------------------
 
-This is mainly for documentation, and to help you find the best role for reuse…
+This is mainly for documentation, and to help you find the best role for reuse. The file to edit is ./meta/main.yml :
 
 .. parsed-literal::
 	galaxy_info:
