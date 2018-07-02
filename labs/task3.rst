@@ -88,7 +88,7 @@ Now, let’s run this role with a simple playbook. There is already a test playb
        - "9083"
 
    roles:
-     - { role: fch.rundocker, become: yes, myports: "{{ container_ports }}” }
+     - { role: fch.rundocker, become: yes, myports: "{{ container_ports }}" }
 
 copy this content in a new file: /tmp/task3.yml 
 
