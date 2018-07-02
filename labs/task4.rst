@@ -138,8 +138,6 @@ Copy/paste the following tasks in your tasks/main.yml file:
 		 context: client-side
 	      pool: "{{pool_name}}"
 	      snat: "automap"
-	      irules:
-	      - "_sys_https_redirect"
 	      validate_certs: False
 	    delegate_to: localhost
 
