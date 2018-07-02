@@ -19,7 +19,7 @@ https://docs.ansible.com/ansible/2.5/user_guide/playbooks.html
 ------------------
 
 
-copy and paste the following content in a YAML playbookfile. let’s call it: task2.yml
+copy and paste the following content in a YAML playbookfile. let’s call it: /tmp/task2.yml
 
 .. code::
   $ vi /tmp/task2.yml
