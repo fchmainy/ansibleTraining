@@ -39,6 +39,7 @@ Search the Galaxy database by tags, platforms, author and multiple keywords. For
  erjac77.module-f5bigip                   Ansible module for F5 BIG-IP
  . . .
 
+*Note: the command could fail with a timeout error in our lab environment*
 
 List installed roles
 -----------------------
