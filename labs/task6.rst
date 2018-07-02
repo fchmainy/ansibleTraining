@@ -76,7 +76,7 @@ Ensure the definition is ** Pipeline script** in the drop down list and paste th
 	       env.vsIP = params.vsIP
 	       env.websrvPorts = params.websrvPorts
 	       //env.poolMemberPorts = params.websrvPorts.split(',')
-	       env.poolMemberIP = "10.100.26.192"
+	       env.poolMemberIP = params.websrvIP
 
 	   }
 	   stage('the most useless step I have created') {
