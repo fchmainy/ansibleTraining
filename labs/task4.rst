@@ -194,7 +194,7 @@ As of version 2.3, Ansible also supports encrypting single values inside a YAML 
 
 The ansible-vault encrypt_string command will encrypt and format a provided string into a format that can be included in ansible-playbook YAML files.
 
-To encrypt your admin password as a cli arg:
+To encrypt your admin password as a cli arg, you need to provide a Vault password (you can put anything as soon as you remember it as You will need to unlock your vault several times in the upcoming tasks):
 
 .. parsed-literal::
 
