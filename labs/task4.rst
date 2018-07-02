@@ -249,7 +249,7 @@ create a playbook called /tmp/task4.yml and paste the following content:
 
 	---
 	- name: Configure http service
-	  hosts: production
+	  hosts: production:&bigip
 	  gather_facts: false
 	  roles:
 	    - { role: username.lbsvc }
