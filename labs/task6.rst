@@ -66,95 +66,97 @@ Ensure the definition is ** Pipeline script** in the drop down list and paste th
 
 .. parsed-literal::
 
-    #!/usr/bin/env groovy
+	#!/usr/bin/env groovy
 
-    import groovy.json.JsonOutput
+	import groovy.json.JsonOutput
 
-    node {
-    stage('Preparation') { 
-        env.appName = params.appName
-        env.vsIP = params.vsIP
-        env.websrvPorts = params.websrvPorts
-        //env.poolMemberPorts = params.websrvPorts.split(',')
-        env.poolMemberIP = params.websrvIP
+	node {
+	   stage('Preparation') { 
+	       env.appName = params.appName
+	       env.vsIP = params.vsIP
+	       env.websrvPorts = params.websrvPorts
+	       //env.poolMemberPorts = params.websrvPorts.split(',')
+	       env.poolMemberIP = "10.100.26.192"
 
-    }
-    stage('the most useless step I have created') {
-        sh "echo --------------------------------"
-        sh "echo $appName"
-        sh "echo $vsIP"
-        sh "echo $websrvPorts"
-        sh "echo --------------------------------"
-    }
+	   }
+	   stage('the most useless step I have created') {
+	       sh "echo --------------------------------"
+	       sh "echo $appName"
+	       sh "echo $vsIP"
+	       sh "echo $websrvPorts"
+	       sh "echo --------------------------------"
+	   }
 
-        parallel(
-            "Creating docker containers": {
-                stage('yet an other useless step')
-                    {
-                        sh "echo I am starting my containers"
-                    }
-                stage('Creating dockers')
-                    {
-                        ansiblePlaybook(
-                        colorized: true, 
-                        playbook: '/tmp/task3.yml', 
-                        extras: '',
-                        sudoUser: null,
-                        extraVars: [
-                            container_ports : [websrvPorts]
-                    ])
-                    }
-                stage('no comment...')
-                {
-                    sh "echo containers are ready"
-                }
-            }, 
-            "Configuring BigIP": {
-                stage('preparing pool member list'){
-                    def poolMemberPorts = websrvPorts.split(",")
-                    println "my ports: $poolMemberPorts"
-                    
-                    def numPorts = poolMemberPorts.size()
-                    echo "$numPorts"
-                    
-                    def listPool = []
-                    
-                    for(port in poolMemberPorts){
-                        echo "working on this pool port: $port"
-                        echo "{\"port\":\"" + port +"\", \"host\": \"" + poolMemberIP + "\"}"
-                        listPool.add("{\"port\":\"" + port +"\", \"host\": \"" + poolMemberIP + "\"}")
-                        println "my list: $listPool"
-                        
-                        // [{"port":"9xxx","host:"10.1.10.20"},{"port":"9xxx","host:"10.1.10.20"}] 
-                    }
-                    env.pools = listPool.join(",")
-                    echo "Pool list: $pools"
-                }
-                stage('lbsvc')
-                    {
-                    withCredentials([[$class: 'StringBinding', credentialsId: 'vaultTask4', variable: 'VAULT_TOKEN']]) {
-                        ansiblePlaybook(
-                        colorized: true, 
-                        playbook: '/tmp/task4.yml', 
-                        extras: '',
-                        sudoUser: null,
-                        extraVars: [
-                            ask-vault-pass: ${VAULT_TOKEN}
-                            //bigip_password: VAULT_TOKEN,
-                            appName: appName,
-                            pool_members : pools,
-                            vsIP : vsIP
-                    ])
-                    }
-                }
-            })
-        stage('finishing...')
-        {
-            sh "echo I have finished my pipeline."
+	    parallel(
+		"Creating docker containers": {
+		    stage('yet an other useless step')
+			{
+			    sh "echo I am starting my containers"
+			}
+		    stage('Creating dockers')
+			{
+			    ansiblePlaybook(
+			    colorized: true, 
+			    playbook: '/tmp/task3.yml', 
+			    extras: '',
+			    sudoUser: null,
+			    extraVars: [
+				container_ports : [websrvPorts]
+			])
+			}
+		    stage('no comment...')
+		    {
+			sh "echo containers are ready"
+		    }
+		}, 
+		"Configuring BigIP": {
+		    stage('preparing pool member list'){
+			def poolMemberPorts = websrvPorts.split(",")
+			println "my ports: $poolMemberPorts"
 
-        }
+			def numPorts = poolMemberPorts.size()
+			echo "$numPorts"
 
-    }
+			def listPool = []
+
+			for(port in poolMemberPorts){
+			    echo "working on this pool port: $port"
+			    echo "{\"port\":\"" + port +"\", \"host\": \"" + poolMemberIP + "\"}"
+			    listPool.add("{\"port\":\"" + port +"\", \"host\": \"" + poolMemberIP + "\"}")
+			    println "my list: $listPool"
+
+			    // [{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}] 
+			}
+			env.pools = listPool.join(",")
+			echo "Pool list: $pools"
+		    }
+		    stage('lbsvc')
+			{
+
+		    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bigips', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+			    ansiblePlaybook(
+			    colorized: true, 
+			    playbook: '/tmp/task4.yml', 
+			    extras: "-vvv",
+			    sudoUser: null,
+			    extraVars: [
+				username: USERNAME,
+				password: PASSWORD,
+				app_name: appName,
+				pool_members : [pools],
+				vip_ip : vsIP
+				]
+			    )
+			}
+		    }
+		})
+	    stage('finishing...')
+	    {
+		sh "echo I have finished my pipeline."
+
+	    }
+
+	}
 
 To run your pipeline, click on **Build with parameters**
 
