@@ -122,7 +122,7 @@ Ensure the definition is ** Pipeline script** in the drop down list and paste th
 			for(port in poolMemberPorts){
 			    echo "working on this pool port: $port"
 			    echo "{\\"port\\":\\"" + port +"\\", \\"host\\": \\"" + poolMemberIP + "\\"}"
-			    listPool.add("{\"port\":\"" + port +"\", \"host\": \"" + poolMemberIP + "\"}")
+			    listPool.add("{\\"port\\":\\"" + port +"\\", \\"host\\": \\"" + poolMemberIP + "\\"}")
 			    println "my list: $listPool"
 
 			    // [{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}] 
