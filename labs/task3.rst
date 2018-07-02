@@ -13,7 +13,7 @@ The command line tool by default communicates with the Galaxy website API using 
 
 Installing Roles
 --------------------
-Use the ansible-galaxy command to download roles from the Galaxy website
+Use the ansible-galaxy command to download roles from the Galaxy website. here is the syntax:
 
 .. code::
 
