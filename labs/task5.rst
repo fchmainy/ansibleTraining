@@ -1,6 +1,15 @@
 Task5: Create a Jenkins Freestyle Job
 =============================
 
+0. Clean your Load Balancing configuration
+-------------------------------------------------
+Please clean your Load Balancing configuration before you begin so you can see all the magic and claim nothing was hidden in your sleeves.
+Do it through the WebUI and remove:
+	* Virtual Server
+	* Pool
+	* Nodes
+
+
 1. Create a new Job
 ---------------------------
 
