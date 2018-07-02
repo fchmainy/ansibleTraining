@@ -97,6 +97,7 @@ Copy/paste the following tasks in your tasks/main.yml file:
 	      name: "{{item.host}}"
 	      validate_certs: False
 	    with_items: "{{pool_members}}"
+	    validate_certs: False
 	    delegate_to: localhost
 
 	  - name: Create pool
