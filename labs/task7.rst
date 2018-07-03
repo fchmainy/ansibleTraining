@@ -31,7 +31,7 @@ At the bottom of the page we will configure the pipeline with the following defi
   *	Branch Specific: */master (default)
   *	Script Path: **.JenkinsFile** (do not forget the “.” At the beginning)
 
-.. image:: ../images/image033.jpeg
+.. image:: ../images/image033.png
    :scale: 50 %
    :align: center 
 
@@ -44,7 +44,7 @@ Then save.
 
 You can now run the Jenkins build by clicking on the *Build with Parameters* button
 
-.. image:: ../images/image034.jpeg
+.. image:: ../images/image034.png
   :scale: 50 %
   :align: center 
 
@@ -65,32 +65,32 @@ If you have time, you can link this pipeline as a **Jenkins Downstream Job** on 
 Go back to your **task6** pipeline.
 Then click on the **Configure** button.
 
-.. image:: ../images/image035.jpeg
+.. image:: ../images/image035.png
   :scale: 50 %
   :align: center 
 
 At the end of the String Parameters you have previously configured, click on **Add Parameter**
 
-.. image:: ../images/image036.jpeg
+.. image:: ../images/image036.png
   :scale: 50 %
   :align: center 
 
 Then choose **Boolean Parameter**
 It will add a new parameter box you’re your parameters entries:
 
-.. image:: ../images/image037.jpeg
+.. image:: ../images/image037.png
   :scale: 50 %
   :align: center 
 
 Let’s call this new Boolean parameter **secured** (Caution: parameters names are case sensitive).
 
-.. image:: ../images/image038.jpeg
+.. image:: ../images/image038.png
   :scale: 50 %
   :align: center 
 
 We can also check **Default Value** so every app deployed will be secured by default and you will have to intentionally uncheck this box and leave your apps and data at the mercy of the bad guys
 
-.. image:: ../images/image039.jpeg
+.. image:: ../images/image039.png
    :scale: 50 %
    :align: center 
 
@@ -114,7 +114,7 @@ Click on  **save**
 
 Then, run your build:
 
-.. image:: ../images/image040.jpeg
+.. image:: ../images/image040.png
    :scale: 50 %
    :align: center 
  
