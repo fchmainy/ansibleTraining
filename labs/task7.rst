@@ -90,7 +90,7 @@ Let’s call this new Boolean parameter **secured** (Caution: parameters names a
 
 We can also check **Default Value** so every app deployed will be secured by default and you will have to intentionally uncheck this box and leave your apps and data at the mercy of the bad guys
 
-.. image:: ../images/image039.png
+.. image:: ../images/image039.jpg
    :scale: 50 %
    :align: center 
 
@@ -99,16 +99,16 @@ Then insert the following groovy fancy code to your pipeline script after the **
 
 .. parsed-literal::
 
-stage('run downstream pipeline') {
-        if ( params.secured == 'true')
-            {
-            def job = build job: 'task7', parameters: [[$class:    'StringParameterValue', name: 'appName', value: '$appName']]            
-            }
-            else {
-                echo "I will tell it to your CSO!"
-                
-            }
-   }
+   stage('run downstream pipeline') {
+           if ( params.secured == 'true')
+               {
+               def job = build job: 'task7', parameters: [[$class:    'StringParameterValue', name: 'appName', value: '$appName']]            
+               }
+               else {
+                   echo "I will tell it to your CSO!"
+
+               }
+      }
 
 Click on  **save**
 
