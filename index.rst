@@ -27,6 +27,7 @@ Table of Contents:
    labs/task4.rst
    labs/task5.rst
    labs/task6.rst
+   labs/task7.rst
 
 .. toctree::
    :maxdepth: 2
