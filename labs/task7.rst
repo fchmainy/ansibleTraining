@@ -6,7 +6,7 @@ Attach an ASM Policy dynamically using a Jenkins pipeline
 
 Create a new task : **task7** as a pipeline.
 
-.. image:: ../images/image031.jpeg
+.. image:: ../images/image031.png
    :scale: 50 %
    :align: center 
  
@@ -18,7 +18,7 @@ Check the box **This project is parameterized** and add a **String Parameter** c
 We can also put a default value: *myApplication*
 And a shot description for this field: * Please enter your application name*
 
-.. image:: ../images/image032.jpeg
+.. image:: ../images/image032.png
    :scale: 50 %
    :align: center 
  
