@@ -1,184 +1,120 @@
+Attach an ASM Policy dynamically using a Jenkins pipeline
+===============================================
 
-Task7: Create a new Jenkins pipeline
-====================================
+1. Create a new Task
+----------------------------
 
+Create a new task : **task7** as a pipeline.
 
-1. Introduction
----------------
-Let’s begin by creating a new job:
+.. image:: ../images/image031.jpeg
+   :scale: 50 %
+   :align: center 
+ 
 
-.. image:: ../images/image016.jpeg
+Click **OK**.
+
+Check the box **This project is parameterized** and add a **String Parameter** called : **appName**.
+
+We can also put a default value: *myApplication*
+And a shot description for this field: * Please enter your application name*
+
+.. image:: ../images/image032.jpeg
+   :scale: 50 %
+   :align: center 
+ 
+
+At the bottom of the page we will configure the pipeline with the following definition:
+  *	Definition: **Pipeline script from SCM**
+  *	SCM: Git
+  *	Repository URL: https://github.com/fchmainy/fch.attachWAF.git
+  *	Credentials: none (default)
+  *	Branch Specific: */master (default)
+  *	Script Path: **.JenkinsFile** (do not forget the “.” At the beginning)
+
+.. image:: ../images/image033.jpeg
    :scale: 50 %
    :align: center 
 
-Let's call this pipeline **task6** and choose the **pipeline** mode
+Then save.
 
-.. image:: ../images/image017.jpeg
+
+
+2. Run your task
+---------------------
+
+You can now run the Jenkins build by clicking on the *Build with Parameters* button
+
+.. image:: ../images/image034.jpeg
+  :scale: 50 %
+  :align: center 
+
+What this pipeline does is to:
+  1. clone a Git Repo where is defined a new Ansible role called fch.attachWAF
+  2. copy this role in your Ansible roles directory
+  3. Run the fch.attachWAF role so it can grab an F5 WAF Policy from a URL, send it to your bigIP and attach it to a Virtual Server.
+
+You can have a look at the code and the YAML files of the role at : https://github.com/fchmainy/fch.attachWAF
+
+
+
+3. (optional) Link this pipeline as Downstream job on the previous pipeline
+--------------------------------------------------------------------------------------------------
+
+If you have time, you can link this pipeline as a **Jenkins Downstream Job** on your task6 pipeline. 
+
+Go back to your **task6** pipeline.
+Then click on the **Configure** button.
+
+.. image:: ../images/image035.jpeg
+  :scale: 50 %
+  :align: center 
+
+At the end of the String Parameters you have previously configured, click on **Add Parameter**
+
+.. image:: ../images/image036.jpeg
+  :scale: 50 %
+  :align: center 
+
+Then choose **Boolean Parameter**
+It will add a new parameter box you’re your parameters entries:
+
+.. image:: ../images/image037.jpeg
+  :scale: 50 %
+  :align: center 
+
+Let’s call this new Boolean parameter **secured** (Caution: parameters names are case sensitive).
+
+.. image:: ../images/image038.jpeg
+  :scale: 50 %
+  :align: center 
+
+We can also check **Default Value** so every app deployed will be secured by default and you will have to intentionally uncheck this box and leave your apps and data at the mercy of the bad guys
+
+.. image:: ../images/image039.jpeg
    :scale: 50 %
    :align: center 
 
-click **Ok**
 
-
-
-
-
-2. Configure Pipeline
------------------------
-
-We will add parameters in this pipeline so users can add different values to override the default parameters defined in the ansible roles.
-
-click on the **This project is parameterised** checkbox, then add a string parameter:
-
-.. image:: ../images/image018.jpeg
-   :scale: 50 %
-   :align: center 
-
-We will call this parameter **vsIP** which corresponds to the IP Address of the F5 Virtual Server.
-
-.. image:: ../images/image019.jpeg
-   :scale: 50 %
-   :align: center 
-
-
-Do the same for:
-	* appName (application name)
-	* websrvPorts (list of the docker containers ports)
-	* websrvIP (IP address of the docker host)
-
-You can reorganize parameters as you wish, there is no impact on the pipeline. **BUT be careful of the syntax and the case sensitivity of parameter names**.
-
-.. image:: ../images/image020.jpeg
-   :scale: 50 %
-   :align: center 
-   .. image:: ../images/image021.jpeg
-   :scale: 50 %
-   :align: center 
-
-
-At the bottom of the page, you will find the **Pipeline** definition.
-Ensure the definition is ** Pipeline script** in the drop down list and paste the following content in the script text box:
+Then insert the following groovy fancy code to your pipeline script after the **line84**:
 
 .. parsed-literal::
 
-	#!/usr/bin/env groovy
+stage('run downstream pipeline') {
+        if ( params.secured == 'true')
+            {
+            def job = build job: 'task7', parameters: [[$class:    'StringParameterValue', name: 'appName', value: '$appName']]            
+            }
+            else {
+                echo "I will tell it to your CSO!"
+                
+            }
+   }
 
-	import groovy.json.JsonOutput
+Click on  **save**
 
-	node {
-	   stage('Preparation') { 
-	       env.appName = params.appName
-	       env.vsIP = params.vsIP
-	       env.websrvPorts = params.websrvPorts
-	       //env.poolMemberPorts = params.websrvPorts.split(',')
-	       env.poolMemberIP = params.websrvIP
+Then, run your build:
 
-	   }
-	   stage('the most useless step I have created') {
-	       sh "echo --------------------------------"
-	       sh "echo $appName"
-	       sh "echo $vsIP"
-	       sh "echo $websrvPorts"
-	       sh "echo --------------------------------"
-	   }
-
-	    parallel(
-		"Creating docker containers": {
-		    stage('yet an other useless step')
-			{
-			    sh "echo I am starting my containers"
-			}
-		    stage('Creating dockers')
-			{
-			    ansiblePlaybook(
-			    colorized: true, 
-			    playbook: '/tmp/task3.yml', 
-			    extras: '',
-			    sudoUser: null,
-			    extraVars: [
-				container_ports : [websrvPorts]
-			])
-			}
-		    stage('no comment...')
-		    {
-			sh "echo containers are ready"
-		    }
-		}, 
-		"Configuring BigIP": {
-		    stage('preparing pool member list'){
-			def poolMemberPorts = websrvPorts.split(",")
-			println "my ports: $poolMemberPorts"
-
-			def numPorts = poolMemberPorts.size()
-			echo "$numPorts"
-
-			def listPool = []
-
-			for(port in poolMemberPorts){
-			    echo "working on this pool port: $port"
-			    echo "{\\"port\\":\\"" + port +"\\", \\"host\\": \\"" + poolMemberIP + "\\"}"
-			    listPool.add("{\\"port\\":\\"" + port +"\\", \\"host\\": \\"" + poolMemberIP + "\\"}")
-			    println "my list: $listPool"
-
-			    // [{"port":"80","host:"10.100.26.146"},{"port":"80","host:"10.100.26.146"}] 
-			}
-			env.pools = listPool.join(",")
-			echo "Pool list: $pools"
-		    }
-		    stage('lbsvc')
-			{
-
-		    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bigips', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-			    ansiblePlaybook(
-			    colorized: true, 
-			    playbook: '/tmp/task4.yml', 
-			    extras: "-vvv",
-			    sudoUser: null,
-			    extraVars: [
-				username: USERNAME,
-				password: PASSWORD,
-				app_name: appName,
-				pool_members : [pools],
-				vip_ip : vsIP
-				]
-			    )
-			}
-		    }
-		})
-	    stage('finishing...')
-	    {
-		sh "echo I have finished my pipeline."
-
-	    }
-
-	}
-
-To run your pipeline, click on **Build with parameters**
-
-.. image:: ../images/image022.jpeg
+.. image:: ../images/image040.jpeg
    :scale: 50 %
    :align: center 
-
-It will open the following page:
-
-.. image:: ../images/image023.jpeg
-   :scale: 50 %
-   :align: center 
-
-Enter the following values:
-	* appName: 	myApplication
-	* vsIP: 	10.1.10.20
-	* websrvPorts:	9034,9035,9036,9037
-	* websrvIP: 	10.1.20.111
-
-then click *Build*
-
-You can visualize the execution of the pipeline in the **Console Output** of your build.
-On the **Blue Ocean** interface the build is shown as follow:
-
-.. image:: ../images/image024.jpeg
-   :scale: 50 %
-   :align: center 
-
-
-
+ 
