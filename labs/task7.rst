@@ -141,5 +141,13 @@ Enter the following values:
    * websrvIP: 10.1.10.20
 
 then click Build   
+
+When the pipeline will reach the **run downstream pipeline** stage, go to **Back to Dashboard > task7** and approve the end of the build.
+
+You can then check on your bigIP that the VS **myAppTask7_vs_https** has been successfully created and has been associated with a WAF policy called **MyAppTask7_waf**.
+
+
+**__That's all Folks!!!__**
+
    
  
