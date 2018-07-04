@@ -70,13 +70,6 @@ in the playbook path, add the following line:
 
 Do not specify Inventory, as we will use the main inventory (/etc/ansible/hosts).
 
-We need to specify this ansible-playbook needs sudo privileges to be executed:
-
-.. image:: ../images/image006.jpeg
-   :scale: 50 %
-   :align: center 
-
-
 
 **Add the lbsvc playbook invocation to the jenkins job**
 
