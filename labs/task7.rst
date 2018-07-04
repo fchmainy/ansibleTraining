@@ -99,8 +99,9 @@ We can also check **Default Value** so every app deployed will be secured by def
 
 Insert the following line so you can get the **secured** boolean value:
 
-..code::
-      stage('Preparation') {
+.. parsed-literal::
+
+   stage('Preparation') {
           env.appName = params.appName
           env.vsIP = params.vsIP
           env.websrvPorts = params.websrvPorts
