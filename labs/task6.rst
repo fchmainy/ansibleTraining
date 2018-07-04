@@ -172,9 +172,9 @@ It will open the following page:
 
 Enter the following values:
 	* appName: 	myApplication
-	* vsIP: 	10.1.10.20
+	* vsIP: 	10.1.20.111
 	* websrvPorts:	9034,9035,9036,9037
-	* websrvIP: 	10.1.20.111
+	* websrvIP: 	10.1.10.20
 
 then click *Build*
 
