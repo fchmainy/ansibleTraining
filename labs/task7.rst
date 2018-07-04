@@ -97,14 +97,26 @@ We can also check **Default Value** so every app deployed will be secured by def
    :align: center 
 
 
+Insert the following line so you can get the **secured** boolean value:
+
+..code::
+      stage('Preparation') {
+          env.appName = params.appName
+          env.vsIP = params.vsIP
+          env.websrvPorts = params.websrvPorts
+          //env.poolMemberPorts = params.websrvPorts.split(',')
+          env.poolMemberIP = params.websrvIP
+          **env.secured = params.secured**
+      }
+
 Then insert the following groovy fancy code to your pipeline script after the **line84**:
 
 .. parsed-literal::
 
    stage('run downstream pipeline') {
-           if ( params.secured == 'true')
+           if ( secured )
                {
-               def job = build job: 'task7', parameters: [[$class:    'StringParameterValue', name: 'appName', value: '$appName']]            
+               def job = build job: 'task7', parameters: [[$class:    'StringParameterValue', name: 'appName', value: appName]]            
                }
                else {
                    echo "I will tell it to your CSO!"
