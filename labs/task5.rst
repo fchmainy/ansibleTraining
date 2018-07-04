@@ -112,9 +112,7 @@ Then, fill the required fields with the following values:
 
 Note:
 	You have seen Jenkins can store different kind of confidential data in its credential store.
-	We could have created our BigIP passwords in the Jenkins store which is still a valid method and probably an easier way of managing all the credentials from a central standpoint but it will come to the discussion about what is the safest solution between ansible vault (AES256) and Jenkins credential store (AES128).
-
-
+	
 You can reorder the two playbooks invocations easily by clicking and dragging the 2 **Invoke Ansible Playbook** on their top left corner as the two playbooks are independent of each other.
 
 .. image:: ../images/image012.jpeg
