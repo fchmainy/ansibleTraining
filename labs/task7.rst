@@ -133,4 +133,13 @@ Then, run your build:
 .. image:: ../images/image040.png
    :scale: 50 %
    :align: center 
+   
+Enter the following values:
+   * appName: myApplication
+   * vsIP: 10.1.20.121
+   * websrvPorts: 9061,9062,9063,9064
+   * websrvIP: 10.1.10.20
+
+then click Build   
+   
  
