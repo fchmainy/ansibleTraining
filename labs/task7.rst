@@ -97,7 +97,7 @@ We can also check **Default Value** so every app deployed will be secured by def
    :align: center 
 
 
-Insert the following line so you can get the **secured** boolean value:
+Insert the line in bold in the Preparation stage so you can get the **secured** boolean value from the input form:
 
 .. parsed-literal::
 
@@ -117,7 +117,8 @@ Then insert the following groovy fancy code to your pipeline script after the **
    stage('run downstream pipeline') {
            if ( secured )
                {
-               def job = build job: 'task7', parameters: [[$class:    'StringParameterValue', name: 'appName', value: appName]]            
+               echo "This is safer!"
+               def job = build job: 'task7', parameters: [[$class:    'StringParameterValue', name: 'appName', value: appName]]           
                }
                else {
                    echo "I will tell it to your CSO!"
