@@ -110,7 +110,7 @@ Insert the line in bold in the Preparation stage so you can get the **secured** 
           **env.secured = params.secured**
       }
 
-Then insert the following groovy fancy code to your pipeline script after the **line84**:
+Then insert the following groovy fancy code to your pipeline script after the **line 85**:
 
 .. parsed-literal::
 
