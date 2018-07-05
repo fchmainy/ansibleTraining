@@ -29,7 +29,7 @@ At the bottom of the page we will configure the pipeline with the following defi
   *	Repository URL: https://github.com/fchmainy/fch.attachWAF.git
   *	Credentials: none (default)
   *	Branch Specific: */master (default)
-  *	Script Path: **.JenkinsFile** (do not forget the “.” At the beginning)
+  *	Script Path: **Jenkinsfile**
 
 .. image:: ../images/image033.png
    :scale: 50 %
