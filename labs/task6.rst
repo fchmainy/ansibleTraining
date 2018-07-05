@@ -171,8 +171,8 @@ It will open the following page:
    :align: center 
 
 Enter the following values:
-	* appName: 	myApplication
 	* vsIP: 	10.1.20.111
+	* appName: 	myApplication
 	* websrvPorts:	9034,9035,9036,9037
 	* websrvIP: 	10.1.10.20
 
