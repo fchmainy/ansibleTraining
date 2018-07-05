@@ -263,7 +263,7 @@ You can easily run the same role to add pool members to the configuration (remem
 
 .. parsed-literal::
 
-	$ ansible-playbook /tmp/task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"9084","host":"10.1.10.20"},{"port":"9085","host":"10.1.10.20"}]”'
+	$ ansible-playbook /tmp/task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"9084","host":"10.1.10.20"},{"port":"9085","host":"10.1.10.20"}]'
 
 or run the same playbook for a new service without touching the playbook YAML file:
 
