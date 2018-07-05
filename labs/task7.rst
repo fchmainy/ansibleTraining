@@ -50,6 +50,9 @@ You can now run the Jenkins build by clicking on the *Build with Parameters* but
 
 You can use the **myAppTask4** application name as a variable so you will attach the Web Application Firewall policy to this related existing Virtual Server. 
 
+When the pipeline is executed, click on the latest step of your pipeline to approve the deployment.
+*This click is completely useless but We had to make this lab a little bit tricky, right?*
+
 What this pipeline does is to:
   1. clone a Git Repo where is defined a new Ansible role called fch.attachWAF
   2. copy this role in your Ansible roles directory
