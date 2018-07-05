@@ -5,7 +5,7 @@ Task 4. Create an ansible role
 ------------------------
 Use the init command to initialize the base structure of a new role, saving time on creating the various directories and main.yml files a role requires
 
-.. code::
+.. parsed-literal::
 
 	$ ansible-galaxy init **username**.lbsvc --offline
 	- username.lbsvc was created successfully
