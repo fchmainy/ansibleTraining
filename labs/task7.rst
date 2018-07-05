@@ -138,7 +138,7 @@ Then, run your build:
    :align: center 
    
 Enter the following values:
-   * appName: myApplication
+   * appName: myAppTask7
    * vsIP: 10.1.20.121
    * websrvPorts: 9061,9062,9063,9064
    * websrvIP: 10.1.10.20
