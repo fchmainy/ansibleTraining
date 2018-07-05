@@ -263,13 +263,13 @@ You can easily run the same role to add pool members to the configuration (remem
 
 .. parsed-literal::
 
-	$ ansible-playbook /tmp/task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"9084","host:"10.1.10.20"},{"port":"9085","host:"10.1.10.20"}]”'
+	$ ansible-playbook /tmp/task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"9084","host":"10.1.10.20"},{"port":"9085","host":"10.1.10.20"}]”'
 
 or run the same playbook for a new service without touching the playbook YAML file:
 
 .. parsed-literal::
 
-	$ ansible-playbook /tmp/task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"9082","host:"10.1.10.20"},{"port":"9081","host:"10.1.10.20"}] app_name="my2ndApp_task4" vip_ip="10.1.20.102"'
+	$ ansible-playbook /tmp/task4.yml --ask-vault-pass --extra-vars 'pool_members=[{"port":"9082","host":"10.1.10.20"},{"port":"9081","host":"10.1.10.20"}] app_name="my2ndApp_task4" vip_ip="10.1.20.102"'
 
 You can run it as many time as you want as it is... did I already told you about idempotency?
 
