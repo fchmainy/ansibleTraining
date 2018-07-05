@@ -43,7 +43,7 @@ click **Ok**
 
 2. Configure the job
 --------------------------
-	**A/ Add the rundocker playbook invocation to the jenkins job :**
+**A/ Add the rundocker playbook invocation to the jenkins job :**
 
 (optional) add into the description field: *"This is simple freestyle job to run sequentially 2 ansible playbooks.”*
 
@@ -75,7 +75,7 @@ Do not specify Inventory, as we will use the main inventory (/etc/ansible/hosts)
 
 
 
-	**B/ Add the lbsvc playbook invocation to the jenkins job :**
+**B/ Add the lbsvc playbook invocation to the jenkins job :**
 
 Add a new **Invoke Ansible Playbook** as an additional build step of your job:
 
