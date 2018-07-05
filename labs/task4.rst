@@ -7,14 +7,14 @@ Use the init command to initialize the base structure of a new role, saving time
 
 .. code::
 
-	$ ansible-galaxy init username.lbsvc --offline
+	$ ansible-galaxy init **username**.lbsvc --offline
 	- username.lbsvc was created successfully
 
 You should then have the framework for your role:
 
 .. parsed-literal::
 
-	$ ls -R username.lbsvc/
+	$ ls -R **username**.lbsvc/
 	username.lbsvc/:
 	README.md  defaults  files  handlers  meta  tasks  templates  tests  vars
 
@@ -235,12 +235,12 @@ Finally copy your role to /etc/ansible/roles:
 
 .. code::
 
-	$ sudo cp -R username.lbsvc /etc/ansible/roles/
+	$ sudo cp -R **username**.lbsvc /etc/ansible/roles/
 
 Running your playbook:
 -------------------------------
 
-create a playbook called /tmp/task4.yml and paste the following content:
+create a playbook called /tmp/task4.yml and paste the following content (be sure your rename username.lbsvc with your **username**):
 
 .. parsed-literal::
 
