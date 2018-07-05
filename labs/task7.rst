@@ -31,7 +31,7 @@ At the bottom of the page we will configure the pipeline with the following defi
   *	Branch Specific: */master (default)
   *	Script Path: **Jenkinsfile**
 
-.. image:: ../images/image033b.png
+.. image:: ../images/image33b.png
    :scale: 50 %
    :align: center 
 
